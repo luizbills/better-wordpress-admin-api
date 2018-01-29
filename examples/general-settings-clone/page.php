@@ -152,15 +152,10 @@ function date_format_radio_choices () {
     $choices = [];
 
     $formats['F j, Y'] = '<span class="date-time-text format-i18n">January 29, 2018</span><code>F j, Y</code>';
-
     $formats['Y-m-d'] = '<span class="date-time-text format-i18n">2018-01-29</span><code>Y-m-d</code>';
-
     $formats['m/d/Y'] = '<span class="date-time-text format-i18n">01/29/2018</span><code>m/d/Y</code>';
-
-
     $formats['d/m/Y'] = '<span class="date-time-text format-i18n">29/01/2018</span><code>d/m/Y</code>';
-
-
+    
     $formats['custom'] = '<span class="date-time-text">Custom: </span>';
     $formats['custom'] .= '<span class="screen-reader-text"> enter a custom date format in the following field</span>';
     $formats['custom'] .= '<input type="text" name="date_format_custom" id="date_format_custom" value="F j, Y" class="small-text">';
@@ -178,9 +173,7 @@ function __time_format_radio_choices () {
     $choices = [];
 
     $formats['g:i a'] = '<span class="date-time-text format-i18n">1:49 pm</span><code>g:i a</code>';
-
     $formats['g:i A'] = '<span class="date-time-text format-i18n">1:49 PM</span><code>g:i A</code>';
-
     $formats['H:i'] = '<span class="date-time-text format-i18n">11:50</span><code>H:i</code>';
 
     $formats['custom'] = '<span class="date-time-text">Custom: </span>';
@@ -197,7 +190,8 @@ function __time_format_radio_choices () {
 // generate the choices of the "Week Starts On"
 function __start_of_week_select_choices () {
     $week_days = [];
-    foreach (range(0, 7) as $number) {
+    foreach ( range(0, 7) as $number ) {
+        // get week day name
         $week_days[] = date('l', strtotime("Sunday +{$number} days"));
     }
     return $week_days;
