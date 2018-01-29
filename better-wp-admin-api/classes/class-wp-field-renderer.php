@@ -19,7 +19,7 @@ class _WP_Field_Renderer {
 	public static function render_invalid_field ( $settings, $echo = true ) {
 		ob_start();
 		?>
-		<pre><code>Invalid field declaration. <?php esc_html_e( $settings['error_message'] ); ?></code></pre>
+		<pre><code>Invalid field declaration. <?php echo esc_html( $settings['error_message'] ); ?></code></pre>
 		<?php
 		$html = ob_get_clean();
 		if ( ! $echo ) {
@@ -94,13 +94,13 @@ class _WP_Field_Renderer {
 		ob_start();
 		echo self::get_html_template( $settings['before'], false, [ $settings ] );
 		?>
-		<select name="<?php esc_attr_e( $id ); ?>" id="<?php esc_attr_e( $id ); ?>">
+		<select name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
 
 			<?php
 			foreach( $choices as $choice_value => $choice_label ) {
 
 				if ( is_array( $choice_label ) ) {
-					echo '<optgroup label="' . esc_attr__( $choice_value ) . '">';
+					echo '<optgroup label="' . esc_attr( $choice_value ) . '">';
 
 					foreach( $choice_label as $child_value => $child_label ) {
 						self::render_option_select( $child_label, $child_value, $value == $child_value );
@@ -134,10 +134,10 @@ class _WP_Field_Renderer {
 		?>
 
 		<option
-			value="<?php esc_attr_e( $value ); ?>"
+			value="<?php echo esc_attr( $value ); ?>"
 			<?php echo ( $selected ? 'selected="selected"' : '' ); ?>
 		>
-			<?php esc_html_e( $label ) ?>
+			<?php echo esc_html( $label ) ?>
 		</option>
 
 		<?php
@@ -157,14 +157,14 @@ class _WP_Field_Renderer {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text">
-				<span><?php esc_html_e( $label ); ?></span>
+				<span><?php echo esc_html( $label ); ?></span>
 			</legend>
-			<label for="<?php esc_attr_e( $id ); ?>">
+			<label for="<?php echo esc_attr( $id ); ?>">
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 				<input
 					type="checkbox"
-					name="<?php esc_attr_e( $id ); ?>"
-					id="<?php esc_attr_e( $id ); ?>"
+					name="<?php echo esc_attr( $id ); ?>"
+					id="<?php echo esc_attr( $id ); ?>"
 					value="on"
 					<?php checked( 'on', $value ); ?>
 				>
@@ -192,7 +192,7 @@ class _WP_Field_Renderer {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text">
-				<span><?php esc_html_e( $label ); ?></span>
+				<span><?php echo esc_html( $label ); ?></span>
 			</legend>
 			<p>
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
@@ -202,8 +202,8 @@ class _WP_Field_Renderer {
 				<label>
 					<input
 						type="radio"
-						name="<?php esc_attr_e( $id ); ?>"
-						value="<?php esc_attr_e( $choice_key ); ?>"
+						name="<?php echo esc_attr( $id ); ?>"
+						value="<?php echo esc_attr( $choice_key ); ?>"
 						<?php checked( $choice_key, $value ); ?>
 					>
 
@@ -239,7 +239,7 @@ class _WP_Field_Renderer {
 		echo self::get_html_template( $settings['before'], false, [ $settings ] );
 		?>
 
-		<input type="hidden" name="<?php esc_attr_e( $id ); ?>" value="<?php esc_attr_e( $value ); ?>">
+		<input type="hidden" name="<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $value ); ?>">
 
 
 		<?php
@@ -282,7 +282,7 @@ class _WP_Field_Renderer {
 		<noscript>
 			<div class="notice notice-error">
 				<p><strong>
-					<?php esc_html_e( 'Code editor field needs javascript to work.', BETTER_WP_ADMIN_API_DOMAIN ); ?>
+					<?php echo esc_html( 'Code editor field needs javascript to work.', BETTER_WP_ADMIN_API_DOMAIN ); ?>
 				</strong></p>
 			</div>
 		</noscript>
@@ -290,16 +290,16 @@ class _WP_Field_Renderer {
 		<div class="code-container">
 			<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 			<textarea
-				id="<?php esc_attr_e( $id ); ?>"
-				name="<?php esc_attr_e( $id ); ?>"
+				id="<?php echo esc_attr( $id ); ?>"
+				name="<?php echo esc_attr( $id ); ?>"
 				class="large-text code"
-				style="height: <?php esc_attr_e( $height ); ?>px;"
+				style="height: <?php echo esc_attr( $height ); ?>px;"
 			><?php echo $value; ?></textarea>
 			<div
-				data-ace-for="<?php esc_attr_e( $id ); ?>"
-				data-ace-mode="<?php esc_attr_e( $lang ); ?>"
-				data-ace-theme="<?php esc_attr_e( $theme ); ?>"
-				data-ace-height="<?php esc_attr_e( $height ); ?>"
+				data-ace-for="<?php echo esc_attr( $id ); ?>"
+				data-ace-mode="<?php echo esc_attr( $lang ); ?>"
+				data-ace-theme="<?php echo esc_attr( $theme ); ?>"
+				data-ace-height="<?php echo esc_attr( $height ); ?>"
 				class="code-editor"
 			>
 			<?php echo self::get_html_template( $settings['after'], false, [ $settings ] ); ?>
