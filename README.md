@@ -4,8 +4,16 @@ A better way to build options pages for you plugins/themes.
 
 ## Installation
 
-- clone this repo into your theme/plugin
-- include the `better-wp-admin-api/init.php` file
+Clone or download this repo and put inside of your theme/plugin
+```
+cd wp-content/plugins/my-plugin
+git clone https://github.com/luizbills/better-wordpress-admin-api/
+```
+
+Include the `better-wp-admin-api/init.php` file
+```php
+include_once 'path/to/better-wp-admin-api/init.php';
+```
 
 ## Usage
 
