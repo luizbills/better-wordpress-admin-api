@@ -12,9 +12,6 @@ $my_page = wp_create_admin_page( [
     'options_prefix'    => 'simple_',
 ] );
 
-// setup this page (add fields, add hooks, etc)
-
-
 // hook your setup function
 $my_page->on_setup( function ( $the_page, $hook_suffix ) {
 
