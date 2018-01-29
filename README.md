@@ -10,7 +10,7 @@ A better way to build options pages for you plugins/themes.
 
 ## Usage
 
-```
+```php
 include_once __DIR__ . '/path/to/your/better-wp-admin-api/init.php'
 
 // creates a page
