@@ -1,17 +1,16 @@
 <?php
 /*
     Simple Page
-    /wp-admin/options-general.php
 */
 
 include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 
 // creates a page
 $my_page = wp_create_admin_page( [
-    'menu_name'         => 'Page with Tabs',
+    'menu_name'         => 'Simple Page',
 
     // page slug
-    'id'                => 'page-with-tabs',
+    'id'                => 'simple-page',
 
     // prefix for all option names to fields of this page
     'options_prefix'    => 'my_prefix_',

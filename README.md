@@ -6,12 +6,11 @@ A better way to build options pages for you plugins/themes.
 
 - clone this repo into your theme/plugin
 - include the `better-wp-admin-api/init.php` file
-- And follow the examples and documentation.
 
 ## Usage
 
 ```php
-include_once __DIR__ . '/path/to/your/better-wp-admin-api/init.php'
+include_once __DIR__ . '/path/to/your/better-wp-admin-api/init.php';
 
 // creates a page
 $my_page = wp_create_admin_page( [
@@ -53,6 +52,8 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
 // hook your setup function
 $my_page->on_setup( 'my_prefix_setup_my_page' );
 ```
+
+More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree/master/examples) folder.
 
 ### Avaliable field types
 
