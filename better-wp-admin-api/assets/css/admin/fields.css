@@ -1,3 +1,8 @@
 .hidden_field {
     display: none!important;
 }
+
+.tab-header .description {
+    max-width: 48rem;
+    font-style: normal;
+}

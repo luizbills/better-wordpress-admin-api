@@ -180,10 +180,14 @@ class _WP_Admin_Page {
 
 	public function render_section ( $args ) {
 		$tab_data = $this->tabs[ $args['id'] ];
-		$html = '<h1>' . esc_html( $tab_data['name'] ) . '<h1>';
-		if ( $this->tabs[ $tab_data['id'] ]['desc'] ) {
-			$html .= '<p> ' . $tab_data['desc'] . '</p>' . "\n";
+		$html = '<header class="tab-header">';
+		$html .= '<h1>' . esc_html( $tab_data['name'] ) . '</h1>';
+		if ( isset( $tab_data['desc'] ) ) {
+			$html .= '<p class="description">';
+			$html .= _WP_Field_Renderer::render_description( $tab_data['desc'], true, false ) . "\n";
+			$html .= '</p>';
 		}
+		$html .= '</header>';
 		echo $html;
 	}
 
