@@ -8,21 +8,12 @@ include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 // creates a page
 $my_page = wp_create_admin_page( [
     'menu_name'         => 'Page with Tabs',
-
-    // page slug
     'id'                => 'page-with-tabs',
-
-    // prefix for all option names to fields of this page
-    'options_prefix'    => 'my_prefix_',
-
-    // use "parent" parameter to create as a sub-menu
-    //'parent' => 'options-general.php',
-    //'parent' => 'themes.php',
-
-    // more options...
-    //'icon'              => 'dashicons-admin-post',
-    //'position'          => 10,
+    'options_prefix'    => 'with_tabs_',
 ] );
+
+// hook your setup function
+$my_page->on_setup( 'my_prefix_setup_my_page' );
 
 // setup this page (add fields, add hooks, etc)
 function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
@@ -79,6 +70,3 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
     ] );
 
 }
-
-// hook your setup function
-$my_page->on_setup( 'my_prefix_setup_my_page' );

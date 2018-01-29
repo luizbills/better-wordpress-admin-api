@@ -7,9 +7,10 @@
 include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 
 $page = wp_create_admin_page( [
-    'id' => 'general-settings-clone',
-    'menu_name' => 'General Clone',
-    'parent' => 'options-general.php',
+    'id'                => 'general-settings-clone',
+    'menu_name'         => 'General Clone',
+    //'parent'          => 'options-general.php',
+    'options_prefix'    => ''
 ] );
 
 $page->on_setup( function ( $page, $hook_suffix ) {
@@ -115,64 +116,15 @@ $page->on_setup( function ( $page, $hook_suffix ) {
         'after'     => '<p class="description" id="timezone-description">Choose either a city in the same timezone as you or a UTC timezone offset.</p><p class="timezone-info"><span id="utc-time">Universal time (<abbr>UTC</abbr>) is <code>2018-01-29 12:39:18</code>.</span></p>',
     ]);
 
-
-    // function to generate the avaliable choices of the "Date format"
-    function __date_format_radio_choices () {
-        $formats = [];
-        $choices = [];
-
-        $formats['F j, Y'] = '<span class="date-time-text format-i18n">January 29, 2018</span><code>F j, Y</code>';
-
-        $formats['Y-m-d'] = '<span class="date-time-text format-i18n">2018-01-29</span><code>Y-m-d</code>';
-
-        $formats['m/d/Y'] = '<span class="date-time-text format-i18n">01/29/2018</span><code>m/d/Y</code>';
-
-
-        $formats['d/m/Y'] = '<span class="date-time-text format-i18n">29/01/2018</span><code>d/m/Y</code>';
-
-
-        $formats['custom'] = '<span class="date-time-text">Custom: </span>';
-        $formats['custom'] .= '<span class="screen-reader-text"> enter a custom date format in the following field</span>';
-        $formats['custom'] .= '<input type="text" name="date_format_custom" id="date_format_custom" value="F j, Y" class="small-text">';
-
-        foreach ( $formats as $value => $html ) {
-            $choices[ $value ] = function () use ( $html ) { echo $html; };
-        }
-
-        return $choices;
-    }
-
     $page->add_field([
         'id'        => 'date_format',
         'label'     => 'Date Format',
         'type'      => 'radio',
-        'choices'   => __date_format_radio_choices(),
+        'choices'   => date_format_radio_choices(),
         'desc' => '',
-        // description withou ".description" class and required css
+        // description without ".description" class and required css
         'after' =>  '<p><b>Preview</b>: January 29, 2018</p><style>.date-time-text {display: inline-block;min-width: 10em;}</style>'
     ]);
-
-    // function to generate the avaliable choices of the "Time format"
-    function __time_format_radio_choices () {
-        $formats = [];
-        $choices = [];
-
-        $formats['g:i a'] = '<span class="date-time-text format-i18n">1:49 pm</span><code>g:i a</code>';
-
-        $formats['g:i A'] = '<span class="date-time-text format-i18n">1:49 PM</span><code>g:i A</code>';
-
-        $formats['H:i'] = '<span class="date-time-text format-i18n">11:50</span><code>H:i</code>';
-
-        $formats['custom'] = '<span class="date-time-text">Custom: </span>';
-        $formats['custom'] .= '<span class="screen-reader-text"> enter a custom time format in the following field</span>';
-        $formats['custom'] .= '<input type="text" name="date_format_custom" id="date_format_custom" value="g:i a" class="small-text">';
-
-        foreach ( $formats as $value => $html ) {
-            $choices[ $value ] = function () use ( $html ) { echo $html; };
-        }
-
-        return $choices;
-    }
 
     $page->add_field([
         'id'        => 'time_format',
@@ -180,17 +132,9 @@ $page->on_setup( function ( $page, $hook_suffix ) {
         'type'      => 'radio',
         'choices'   => __time_format_radio_choices(),
         'desc' => '',
-        // description withou ".description" class and required css
+        // description without ".description" class
         'after' =>  '<p><b>Preview</b>: 1:51 pm</p><br><a href="#">Documentation on date and time formatting</a>'
     ]);
-
-    function __start_of_week_select_choices () {
-        $week_days = [];
-        foreach (range(0, 7) as $number) {
-            $week_days[] = date('l', strtotime("Sunday +{$number} days"));
-        }
-        return $week_days;
-    }
 
     $page->add_field([
         'id'        => 'start_of_week',
@@ -201,3 +145,60 @@ $page->on_setup( function ( $page, $hook_suffix ) {
     ]);
 
 } );
+
+// function to generate the avaliable choices of the "Date format"
+function date_format_radio_choices () {
+    $formats = [];
+    $choices = [];
+
+    $formats['F j, Y'] = '<span class="date-time-text format-i18n">January 29, 2018</span><code>F j, Y</code>';
+
+    $formats['Y-m-d'] = '<span class="date-time-text format-i18n">2018-01-29</span><code>Y-m-d</code>';
+
+    $formats['m/d/Y'] = '<span class="date-time-text format-i18n">01/29/2018</span><code>m/d/Y</code>';
+
+
+    $formats['d/m/Y'] = '<span class="date-time-text format-i18n">29/01/2018</span><code>d/m/Y</code>';
+
+
+    $formats['custom'] = '<span class="date-time-text">Custom: </span>';
+    $formats['custom'] .= '<span class="screen-reader-text"> enter a custom date format in the following field</span>';
+    $formats['custom'] .= '<input type="text" name="date_format_custom" id="date_format_custom" value="F j, Y" class="small-text">';
+
+    foreach ( $formats as $value => $html ) {
+        $choices[ $value ] = function () use ( $html ) { echo $html; };
+    }
+
+    return $choices;
+}
+
+// generate the choices of the "Time format"
+function __time_format_radio_choices () {
+    $formats = [];
+    $choices = [];
+
+    $formats['g:i a'] = '<span class="date-time-text format-i18n">1:49 pm</span><code>g:i a</code>';
+
+    $formats['g:i A'] = '<span class="date-time-text format-i18n">1:49 PM</span><code>g:i A</code>';
+
+    $formats['H:i'] = '<span class="date-time-text format-i18n">11:50</span><code>H:i</code>';
+
+    $formats['custom'] = '<span class="date-time-text">Custom: </span>';
+    $formats['custom'] .= '<span class="screen-reader-text"> enter a custom time format in the following field</span>';
+    $formats['custom'] .= '<input type="text" name="date_format_custom" id="date_format_custom" value="g:i a" class="small-text">';
+
+    foreach ( $formats as $value => $html ) {
+        $choices[ $value ] = function () use ( $html ) { echo $html; };
+    }
+
+    return $choices;
+}
+
+// generate the choices of the "Week Starts On"
+function __start_of_week_select_choices () {
+    $week_days = [];
+    foreach (range(0, 7) as $number) {
+        $week_days[] = date('l', strtotime("Sunday +{$number} days"));
+    }
+    return $week_days;
+}

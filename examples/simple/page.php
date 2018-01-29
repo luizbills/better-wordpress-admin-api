@@ -8,20 +8,8 @@ include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 // creates a page
 $my_page = wp_create_admin_page( [
     'menu_name'         => 'Simple Page',
-
-    // page slug
     'id'                => 'simple-page',
-
-    // prefix for all option names to fields of this page
-    'options_prefix'    => 'my_prefix_',
-
-    // use "parent" parameter to create as a sub-menu
-    //'parent' => 'options-general.php',
-    //'parent' => 'themes.php',
-
-    // more options...
-    //'icon'              => 'dashicons-admin-post',
-    //'position'          => 10,
+    'options_prefix'    => 'simple_',
 ] );
 
 // setup this page (add fields, add hooks, etc)
