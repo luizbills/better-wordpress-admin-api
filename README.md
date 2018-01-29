@@ -1,4 +1,4 @@
-# Better Wordpress Admin API
+# Better WordPress Admin API
 
 A better way to build options pages for you plugins/themes.
 
@@ -31,7 +31,10 @@ $my_page = wp_create_admin_page( [
     //'position'          => 10,
 ] );
 
-// setup this page (add fields, add hooks, etc)
+// hook your setup function
+$my_page->on_setup( 'my_prefix_setup_my_page' );
+
+// setup your page (add fields, add hooks, etc)
 function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
 
     // creates a text field on this page
@@ -40,17 +43,14 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
         'id'        => 'text_field',
         'label'     => 'Text field',
         'desc'      => 'Field description. **You can use markdown here**.',
-        //'default' => 'hello world',
         'props'     => [
-            // tag properties
+            // optional tag properties
             'placeholder' => 'type something...'
-        ]
+        ],
+        //'default' => 'hello world',
     ] );
 
 }
-
-// hook your setup function
-$my_page->on_setup( 'my_prefix_setup_my_page' );
 ```
 
 More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree/master/examples) folder.
