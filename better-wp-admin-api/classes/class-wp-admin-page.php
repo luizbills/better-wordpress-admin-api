@@ -31,7 +31,8 @@ class _WP_Admin_Page {
 
 		// default tab
 		$this->set_tab( [
-			'id' => 'default'
+			'id'    => 'default',
+			'name'  => ucfirst( $this->settings['menu_name'] ),
 		] );
 
 		$this->hooks();
