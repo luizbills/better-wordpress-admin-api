@@ -122,8 +122,8 @@ $page->on_setup( function ( $page, $hook_suffix ) {
         'type'      => 'radio',
         'choices'   => date_format_radio_choices(),
         'desc' => '',
-        // description without ".description" class and required css
-        'after' =>  '<p><b>Preview</b>: January 29, 2018</p><style>.date-time-text {display: inline-block;min-width: 10em;}</style>'
+        // description without ".description" class
+        'after' =>  '<p><b>Preview</b>: January 29, 2018</p>'
     ]);
 
     $page->add_field([
@@ -144,6 +144,18 @@ $page->on_setup( function ( $page, $hook_suffix ) {
         'default'   => 1,
     ]);
 
+    // required css just for this page
+    add_action( "admin_head-$hook_suffix", function () {
+        ?>
+        <style>
+            .date-time-text {
+                display: inline-block;
+                min-width: 10em;
+            }
+        </style>
+        <?php
+    } );
+
 } );
 
 // function to generate the avaliable choices of the "Date format"
@@ -155,7 +167,7 @@ function date_format_radio_choices () {
     $formats['Y-m-d'] = '<span class="date-time-text format-i18n">2018-01-29</span><code>Y-m-d</code>';
     $formats['m/d/Y'] = '<span class="date-time-text format-i18n">01/29/2018</span><code>m/d/Y</code>';
     $formats['d/m/Y'] = '<span class="date-time-text format-i18n">29/01/2018</span><code>d/m/Y</code>';
-    
+
     $formats['custom'] = '<span class="date-time-text">Custom: </span>';
     $formats['custom'] .= '<span class="screen-reader-text"> enter a custom date format in the following field</span>';
     $formats['custom'] .= '<input type="text" name="date_format_custom" id="date_format_custom" value="F j, Y" class="small-text">';

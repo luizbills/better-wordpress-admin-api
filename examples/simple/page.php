@@ -23,7 +23,7 @@ $my_page->on_setup( function ( $the_page, $hook_suffix ) {
         'desc'      => 'Field description. **You can use markdown here**.',
         //'default' => 'hello world',
         'props'     => [
-            // tag properties
+            // optional tag properties
             'placeholder' => 'type something...'
         ]
     ] );

@@ -39,7 +39,7 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
 
     // creates a text field in default tab
     $the_page->add_field( [
-        // fields withou "tag" parameter will appears in default tab
+        // fields without "tag" parameter will appears in default tab
         'type'      => 'text',
         'id'        => 'text_field',
         'label'     => 'Text field',
