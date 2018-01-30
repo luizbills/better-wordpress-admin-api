@@ -16,7 +16,7 @@
 
 ![Text field](assets/field-text.png)
 
-```
+```php
 $page->add_field([
 
     //'tab => 'default',
@@ -46,7 +46,7 @@ $page->add_field([
 
 ![Select field](assets/field-select.png)
 
-```
+```php
 $page->add_field([
 
     //'tab => 'default',
@@ -75,7 +75,7 @@ $page->add_field([
 
 ![Checkbox field](assets/field-checkbox.png)
 
-```
+```php
 $page->add_field([
 
     //'tab => 'default',
@@ -99,7 +99,7 @@ $page->add_field([
 
 ![Radio field](assets/field-radio.png)
 
-```
+```php
 $page->add_field([
 
     //'tab => 'default',
@@ -126,7 +126,7 @@ $page->add_field([
 
 ### Hidden
 
-```
+```php
 $page->add_field([
 
     //'tab => 'default',
@@ -148,7 +148,7 @@ Code editor powered by [ace](https://ace.c9.io/).
 
 ![Code field](assets/field-code.png)
 
-```
+```php
 $page->add_field([
 
     //'tab => 'default',
@@ -176,7 +176,7 @@ $page->add_field([
 
 ![HTML field](assets/html-code.png)
 
-```
+```php
 $the_page->add_field([
 
     //'tab => 'default',
@@ -206,7 +206,7 @@ Note: `html` fields don't has `before`, `after` parameters.
 
 ![Color field](assets/color-code.png)
 
-```
+```php
 $the_page->add_field( [
     //'tab' => 'default',
 
@@ -229,7 +229,7 @@ TinyMCE content editor.
 
 ![Content field](assets/color-content.png)
 
-```
+```php
 $the_page->add_field( [
     //'tab' => 'default',
 
