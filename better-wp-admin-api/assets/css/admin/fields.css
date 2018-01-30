@@ -2,6 +2,7 @@
     display: none!important;
 }
 
+.section-header .description,
 .tab-header .description {
     max-width: 48rem;
     font-style: normal;

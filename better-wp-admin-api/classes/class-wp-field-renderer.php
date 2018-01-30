@@ -310,6 +310,7 @@ class _WP_Field_Renderer {
 		ob_start();
 		?>
 		<div class="color-picker-field">
+			<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 			<input
 				type="text"
 				class="color"
@@ -318,8 +319,13 @@ class _WP_Field_Renderer {
 				value="<?php echo esc_attr( $value ); ?>"
 				data-default-color="<?php echo esc_attr( $default ); ?>"
 			>
+			<?php echo self::get_html_template( $settings['after'], false, [ $settings ] ); ?>
 		</div>
-		<?php
+
+		<?php if ( ! empty( $desc ) ) : ?>
+		<p class="description"><?php self::render_description( $desc ); ?></p>
+		<?php endif;
+
 		$field = ob_get_clean();
 
 		if ( ! $echo ) {
@@ -337,6 +343,9 @@ class _WP_Field_Renderer {
 
 		extract( $settings );
 		ob_start();
+
+		echo self::get_html_template( $settings['before'], false, [ $settings ] );
+
 		wp_editor(
 			$value,
 			esc_attr( $id ),
@@ -346,8 +355,16 @@ class _WP_Field_Renderer {
 				'wpautop'		=> boolval( $wpautop ),
 			]
 		);
-		$field = ob_get_clean();
 
+		echo self::get_html_template( $settings['after'], false, [ $settings ] );
+
+		if ( ! empty( $desc ) ) :
+		?>
+		<p class="description"><?php self::render_description( $desc ); ?></p>
+		<?php
+		endif;
+
+		$field = ob_get_clean();
 		if ( ! $echo ) {
 			return $field;
 		}
@@ -362,7 +379,7 @@ class _WP_Field_Renderer {
 			$settings['content'] = '<pre><code>Missing "content" argument.</code></pre>';
 		}
 
-		$html = '<div class="html">' . self::get_html_template( $settings['content'], false, [ $settings ] ) . '</div>';
+		$html = '<div class="html">' . self::get_html_template( $settings['content'], false, [ $settings, $settings['__PAGE__'] ] ) . '</div>';
 
 		if ( ! $echo ) {
 			return $html;

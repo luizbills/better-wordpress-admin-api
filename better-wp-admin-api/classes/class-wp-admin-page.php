@@ -88,6 +88,7 @@ class _WP_Admin_Page {
 
 	public function register_settings () {
 		$page_slug = $this->settings['id'];
+		$current_section = null;
 
 		if ( count( $this->fields ) > 0 ) {
 
@@ -98,10 +99,17 @@ class _WP_Admin_Page {
 
 				if ( $current_tab && $current_tab != $tab_id ) continue;
 
+				$current_section = $current_tab;
 				// Add section to page
-				add_settings_section( $tab_id, '', [ $this, 'render_section' ], $page_slug );
+				add_settings_section( $current_section, '', [ $this, 'render_section' ], $page_slug );
 
 				foreach ( $tab_data['fields'] as $field ) {
+
+					if ( $field['type'] === 'subtitle' ) {
+						$current_section = $field['id'];
+						add_settings_section( $current_section, '', [ $this, 'render_section' ], $page_slug );
+						continue;
+					}
 
 					// Register field
 					register_setting(
@@ -131,7 +139,7 @@ class _WP_Admin_Page {
 						$field['label'],
 						[ $this, 'render_field' ],
 						$page_slug,
-						$tab_id,
+						$current_section,
 						[
 							'field' => $field,
 							'class' => ( $field['type'] === 'hidden' ) ? 'hidden_field' : '',
@@ -195,19 +203,35 @@ class _WP_Admin_Page {
 	}
 
 	public function render_section ( $args ) {
-		$tab_data = $this->tabs[ $args['id'] ];
-		$html = '<header class="tab-header">';
-		$html .= '<h1>' . esc_html( $tab_data['name'] ) . '</h1>';
-		if ( isset( $tab_data['desc'] ) ) {
-			$html .= '<p class="description">';
-			$html .= _WP_Field_Renderer::render_description( $tab_data['desc'], true, false ) . "\n";
-			$html .= '</p>';
+		$id = $args['id'];
+		$is_tab = false;
+		$title = '';
+		$desc = '';
+		$title_tag = 'h2';
+
+		if ( isset( $this->tabs[ $id ] ) ) {
+			$data = $this->tabs[ $id ];
+			$is_tab = true;
+			$title_tag = 'h1';
+			$title = $data['name'];
+			$desc = $data['desc'];
+		} else {
+			$data = $this->fields[ $id ];
+			$title = $data['label'];
+			$desc = $data['desc'];
+		}
+
+		$html = '<header class="' . ( $is_tab ? 'tab' : 'section' ) . '-header">';
+		$html .= '<' . $title_tag . ' class="title">' . esc_html( $title ) . '</' . $title_tag . '>';
+		if ( ! empty( $desc ) ) {
+			$html .= '<p>' . _WP_Field_Renderer::render_description( $desc, true, false ) . "</p>\n";
 		}
 		$html .= '</header>';
 		echo $html;
 	}
 
 	public function render_page () {
+
 		$page_slug = $this->settings['id'];
 		$current_tab = $this->get_current_tab();
 		$tab_data = $this->tabs[ $current_tab ];
@@ -251,7 +275,7 @@ class _WP_Admin_Page {
 		$field_settings = [];
 
 		// Get saved field value
-		$field_settings['value'] = $this->get_field_value( $field['id'], false );
+		$field_settings['value'] = $this->get_field_value( $field['id'] );
 
 		$field_settings = array_merge( $field, $field_settings );
 
@@ -361,18 +385,21 @@ class _WP_Admin_Page {
 
 	public function add_field ( $data ) {
 		$defaults = [
-			'id' => '',
+			'id'                => '',
 			'sanitize_callback' => '',
-			'tab' => $this->get_default_tab(),
+			'tab'               => $this->get_default_tab(),
+			'default'           => false,
 		];
 		$data = array_merge( $defaults, $data );
+
+		$data['unprefixed_id'] = $data['id'];
 
 		if ( empty ( $data['id'] ) ) {
 			$data['id'] = '__invalid__' . rand(0, 2147483647);
 			$data['type'] = '__invalid__';
 			$data['error_message'] = 'All fields requires a "id" parameter.';
 		} else {
-			$data['id'] = $this->set_field_name( $data['id'] );
+			$data['id'] = $this->prefix_field_name( $data['id'] );
 		}
 
 		if ( empty( $data['label'] ) ) {
@@ -384,7 +411,7 @@ class _WP_Admin_Page {
 			$this->set_tab( [ 'id' => $data['tab'] ] );
 		}
 
-		$data['__ENABLED__'] = true;
+		$data['__PAGE__'] = $this;
 
 		// store the field
 		$this->fields[ $data['id'] ] = $data;
@@ -394,6 +421,22 @@ class _WP_Admin_Page {
 		// useful to use with hooks that requires the field id
 		// e.g: sanitize_option_{$field_id} and default_option_{$field_id}
 		return $data['id'];
+	}
+
+	public function add_subtitle ( $name, $desc = '', $tab = null ) {
+		if ( empty( $name ) ) {
+			throw new Exception( 'All subtitles requires a "name" parameter.' );
+		}
+
+		$tab = empty( $tab ) ? $this->get_default_tab() : $tab;
+
+		$field = $this->add_field( [
+			'type'   => 'subtitle',
+			'tab'    => $tab,
+			'id'     => $name,
+			'label'  => $name,
+			'desc'   => $desc,
+		] );
 	}
 
 	public function set_tab ( $data ) {
@@ -427,14 +470,23 @@ class _WP_Admin_Page {
 		return $this->hook_suffix;
 	}
 
-	public function get_field_value ( $field_id, $concat_prefix = true ) {
-		$field_id = $concat_prefix ? $this->set_field_name( $field_id ) : $field_id;
+	public function get_field_value ( $field_id ) {
+		$possible_ids = [ $field_id, $this->prefix_field_name( $field_id ) ];
+		$field = null;
 		$value = '';
 
-		if ( isset( $this->fields[ $field_id ] ) ) {
-			$field = $this->fields[ $field_id ];
+		foreach ( $possible_ids as $_id ) {
+			$field = $this->fields[ $_id ];
+
+			if ( ! empty( $field ) ) {
+				$field_id = $_id;
+				break;
+			}
+		}
+
+		if ( ! empty( $field ) ) {
 			$value = get_option( $field_id, false );
-			if ( $value === false && isset( $field['default'] ) ) {
+			if ( $value === false ) {
 				$value = apply_filters( 'wp_better_admin_api_field_default_value', $field['default'], $field, $this );
 			} elseif ( empty( $value ) ) {
 				$value = '';
@@ -444,7 +496,7 @@ class _WP_Admin_Page {
 		return $value;
 	}
 
-	public function set_field_name ( $field_id ) {
+	public function prefix_field_name ( $field_id ) {
 		return ( ! empty( $this->settings['options_prefix'] ) )
 			? $this->settings['options_prefix'] . $field_id
 			: $field_id;
