@@ -375,6 +375,10 @@ class _WP_Admin_Page {
 			$data['id'] = $this->set_field_name( $data['id'] );
 		}
 
+		if ( empty( $data['label'] ) ) {
+			$data['label'] = $data['id'];
+		}
+
 		if ( empty( $this->tabs[ $data['tab'] ] ) ) {
 			// create the field tab, if necessary
 			$this->set_tab( [ 'id' => $data['tab'] ] );
