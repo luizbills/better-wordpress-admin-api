@@ -59,6 +59,11 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
     ] );
 
 }
+
+// access the field value
+$text_field = $my_page->get_field_value( 'text_field' );
+// or
+$text_field = $my_page->get_field_value( 'my_prefix_text_field' );
 ```
 
 More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree/master/examples) folder.
@@ -77,7 +82,7 @@ More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree
 
 ## Documentation
 
-Soon... W.I.P.
+- [Field Types](docs/field-types.md)
 
 ## Roadmap
 
