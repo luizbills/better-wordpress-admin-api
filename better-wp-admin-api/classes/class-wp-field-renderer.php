@@ -8,8 +8,9 @@ class _WP_Field_Renderer {
 		'id' => '',
 		'label' => '',
 		'desc' => '',
+		'default' => '',
 		'before' => '',
-		'after'  => ''
+		'after'  => '',
 	];
 
 	private function __construct () {
@@ -241,27 +242,10 @@ class _WP_Field_Renderer {
 
 		<input type="hidden" name="<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $value ); ?>">
 
-
 		<?php
 		echo self::get_html_template( $settings['after'], false, [ $settings ] );
 
 		$html = ob_get_clean();
-		if ( ! $echo ) {
-			return $html;
-		}
-		echo $html;
-	}
-
-	public static function render_html_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-html', $settings );
-
-		if ( empty( $settings['content'] ) ) {
-			$settings['content'] = '<pre><code>Missing "content" argument.</code></pre>';
-		}
-
-		$html = '<div class="html">' . self::get_html_template( $settings['content'], false, [ $settings ] ) . '</div>';
-
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -274,7 +258,7 @@ class _WP_Field_Renderer {
 
 		$settings['lang'] = empty( $settings['lang'] ) ? 'text' : $settings['lang'];
 		$settings['theme'] = empty( $settings['theme'] ) ? 'monokai' : $settings['theme'];
-		$settings['height'] = empty( $settings['height'] ) ? '200' : $settings['height'];
+		$settings['height'] = empty( $settings['height'] ) ? '200' : intval( $settings['height'] );
 
 		extract( $settings );
 		ob_start();
@@ -316,6 +300,74 @@ class _WP_Field_Renderer {
 			return $field;
 		}
 		echo $field;
+	}
+
+	public static function render_color_field ( $settings, $echo = true ) {
+		$settings = array_merge( self::$default_fields, $settings );
+		$settings = apply_filters( 'wp_better_admin_api_field_settings-color', $settings );
+
+		extract( $settings );
+		ob_start();
+		?>
+		<div class="color-picker-field">
+			<input
+				type="text"
+				class="color"
+				name="<?php echo esc_attr( $id ); ?>"
+				id="<?php echo esc_attr( $id ); ?>"
+				value="<?php echo esc_attr( $value ); ?>"
+				data-default-color="<?php echo esc_attr( $default ); ?>"
+			>
+		</div>
+		<?php
+		$field = ob_get_clean();
+
+		if ( ! $echo ) {
+			return $field;
+		}
+		echo $field;
+	}
+
+	public static function render_content_field ( $settings, $echo = true ) {
+		$settings = array_merge( self::$default_fields, $settings );
+		$settings = apply_filters( 'wp_better_admin_api_field_settings-content', $settings );
+
+		$settings['height'] = empty( $settings['height'] ) ? '200' : $settings['height'];
+		$settings['wpautop'] = empty( $settings['wpautop'] ) ? true : $settings['wpautop'];
+
+		extract( $settings );
+		ob_start();
+		wp_editor(
+			$value,
+			esc_attr( $id ),
+			[
+				'textarea_name' => esc_attr( $id ),
+				'editor_height' => intval( $height ),
+				'wpautop'		=> boolval( $wpautop ),
+			]
+		);
+		$field = ob_get_clean();
+
+		if ( ! $echo ) {
+			return $field;
+		}
+		echo $field;
+	}
+
+	public static function render_html_field ( $settings, $echo = true ) {
+		$settings = array_merge( self::$default_fields, $settings );
+		$settings = apply_filters( 'wp_better_admin_api_field_settings-html', $settings );
+
+		if ( empty( $settings['content'] ) ) {
+			$settings['content'] = '<pre><code>Missing "content" argument.</code></pre>';
+		}
+
+		$html = '<div class="html">' . self::get_html_template( $settings['content'], false, [ $settings ] ) . '</div>';
+
+		if ( ! $echo ) {
+			return $html;
+		}
+		echo $html;
 	}
 
 	public static function render_description ( $text, $use_markdown = true, $echo = true ) {

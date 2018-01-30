@@ -26,6 +26,9 @@ class _WP_Admin_Page {
 		'position' => null, // Menu position. Can be used for both top and sub level menus
 	];
 
+	protected $enqueue_color_picker = false;
+	protected $enqueue_ace = false;
+
 	public function __construct ( $settings = [] ) {
 		$this->settings = $this->validate_settings( $settings );
 
@@ -267,14 +270,17 @@ class _WP_Admin_Page {
 			break;
 
 			case 'color':
-				// TODO
-				//_WP_Field_Renderer::render_color_field( $field_settings );
+				_WP_Field_Renderer::render_color_field( $field_settings );
 			break;
 
-			case 'image':
+			case 'content':
+				_WP_Field_Renderer::render_content_field( $field_settings );
+			break;
+
+			//case 'image':
 				// TODO
 				//_WP_Field_Renderer::render_image_field( $field_settings );
-			break;
+			//break;
 
 			case 'html':
 				_WP_Field_Renderer::render_html_field( $field_settings );
@@ -285,7 +291,6 @@ class _WP_Admin_Page {
 			break;
 
 			default:
-				print_r( $field );
 				echo '<pre><code>Undefined field type.</code></pre>';
 			break;
 		}
@@ -293,8 +298,7 @@ class _WP_Admin_Page {
 
 	public function enqueue_assets () {
 		// required for 'color' field type
-		//wp_enqueue_style( 'farbtastic' );
-		//wp_enqueue_script( 'farbtastic' );
+		wp_enqueue_style( 'wp-color-picker' );
 
 		// required for 'image' field type
 		//wp_enqueue_media();
@@ -303,16 +307,21 @@ class _WP_Admin_Page {
 		wp_enqueue_script(
 			'ace-editor',
 			plugins_url( 'assets/vendor/ace/src-min-noconflict/ace.js', BETTER_WP_ADMIN_API_FILE ),
-			['jquery'],
+			[],
 			'1.2.9',
 			true
 		);
 
 		// required for 'code' field type
+		$deps = [ 'jquery' ];
 		wp_enqueue_script(
 			'better-wp-admin-api-fields',
 			plugins_url( 'assets/js/admin/fields.js', BETTER_WP_ADMIN_API_FILE ),
-			[ 'ace-editor', 'jquery' ],
+			[
+				'jquery',
+				'ace-editor',
+				'wp-color-picker',
+			],
 			BETTER_WP_ADMIN_API_VERSION,
 			true
 		);

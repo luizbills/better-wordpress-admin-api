@@ -6,3 +6,14 @@
     max-width: 48rem;
     font-style: normal;
 }
+
+.color-picker-field {
+    position: relative;
+}
+
+.colorpicker {
+    position: absolute;
+    background: #FFF;
+    z-index: 99;
+    border-radius: 100%;
+}
