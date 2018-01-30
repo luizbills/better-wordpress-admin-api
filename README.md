@@ -72,6 +72,8 @@ More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree
 - `hidden` (for **input[type="hidden"]**)
 - `code` (code editor powered by [ace](https://ace.c9.io/))
 - `html` (useful to create your own field template)
+- `color`
+- `content` (default WordPress TinyMCE editor)
 
 ## Documentation
 
@@ -79,10 +81,12 @@ Soon... W.I.P.
 
 ## Roadmap
 
-- More field types:
-    - Color picker field
-    - Image upload field
-    - Multiple checkboxes
+- [ ] Image upload field
+- [ ] Multiple checkboxes
+- [x] ~~Color picker~~
+- [x] ~~TinyMCE editor~~
+- [ ] Field Documentation
+- [ ] Hooks Documentation
 
 ## LICENSE
 

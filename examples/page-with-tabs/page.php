@@ -49,14 +49,32 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
     $the_page->add_field( [
         'tab'       => 'extra',
 
-        'type'      => 'select',
-        'id'        => 'select_field',
-        'label'     => 'Select field',
-        'choices'   => [
-            'yes'       => 'Yes',
-            'no'        => 'No',
-            'maybe'     => 'Maybe... why not?'
-        ]
+        'type'      => 'code',
+        'id'        => 'code_field',
+        'label'     => 'Code editor field',
+
+        'lang'      => 'javascript',
+        'default'   => 'console.log(\'hello world\');',
+    ] );
+
+    $the_page->add_field( [
+        'tab'       => 'extra',
+
+        'type'      => 'content',
+        'id'        => 'content_field',
+        'label'     => 'Content editor field',
+
+        'default'   => 'Hello world!',
+    ] );
+
+    $the_page->add_field( [
+        'tab'       => 'extra',
+
+        'type'      => 'color',
+        'id'        => 'color_field',
+        'label'     => 'Color picker field',
+
+        'default'   => 'rgb(255,0,0)', // or a hex code
     ] );
 
     // creates a html field in "about" tab

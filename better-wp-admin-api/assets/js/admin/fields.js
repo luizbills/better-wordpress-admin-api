@@ -33,7 +33,11 @@ window.jQuery( function ( $ ) {
     }
 
     // color picker
-    // TODO
+    var $colorpickers = $('.color-picker-field .color');
+
+    if ( $colorpickers.length > 0 ) {
+        $colorpickers.hide().wpColorPicker().show();
+    }
 
     // wp media manager
     // TODO
