@@ -2,15 +2,15 @@
 
 ## Field types
 
-- [Text](#)
-- [Select](#)
-- [Checkbox](#)
-- [Radio](#)
-- [Hidden](#)
-- [Code](#)
-- [HTML](#)
-- [Color](#)
-- [Content](#)
+- [Text](#text)
+- [Select](#select)
+- [Checkbox](#checkbox)
+- [Radio](#radio)
+- [Hidden](#hidden)
+- [Code](#code)
+- [HTML](#html)
+- [Color](#color)
+- [Content](#content)
 
 ### Text
 
