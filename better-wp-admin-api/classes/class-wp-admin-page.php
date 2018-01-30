@@ -33,7 +33,7 @@ class _WP_Admin_Page {
 		$this->settings = $this->validate_settings( $settings );
 
 		// default tab
-		$this->set_tab( [
+		$this->default_tab = $this->set_tab( [
 			'id'    => 'default',
 			'name'  => ucfirst( $this->settings['menu_name'] ),
 		] );
@@ -52,9 +52,6 @@ class _WP_Admin_Page {
 	}
 
 	protected function hooks () {
-		// Register plugin settings
-		add_action( 'admin_init' , array( $this, 'register_settings' ) );
-
 		// Add settings page to menu
 		$submenu_position = 10;
 		if ( ! empty( $this->settings['parent'] ) && ! empty( $this->settings['position'] ) ) {
@@ -62,6 +59,10 @@ class _WP_Admin_Page {
 		}
 		add_action( 'admin_menu' , array( $this, 'add_menu_item' ), $submenu_position );
 
+		// Register plugin settings
+		add_action( 'admin_init' , array( $this, 'register_settings' ) );
+
+		// show admin notices
 		add_action( 'admin_notices', [ $this, 'admin_notices' ] );
 	}
 
@@ -86,10 +87,9 @@ class _WP_Admin_Page {
 	}
 
 	public function register_settings () {
+		$page_slug = $this->settings['id'];
 
 		if ( count( $this->fields ) > 0 ) {
-
-			$page_slug = $this->settings['id'];
 
 			// Check posted/selected tab
 			$current_tab = $this->get_current_tab();
@@ -106,24 +106,37 @@ class _WP_Admin_Page {
 					// Register field
 					register_setting(
 						$page_slug,
-						$field['id'],
-						isset( $field['sanitize_callback'] ) ? $field['sanitize_callback'] : false
+						$field['id']
 					);
 
+					if ( is_callable( $field['sanitize_callback'] ) ) {
+						$field_id = $field['id'];
+						$the_page = $this;
+						$sanitize_callback = $field['sanitize_callback'];
+						$args = [
+							$field_id,
+							$the_page,
+							$sanitize_callback,
+						];
+						add_filter( 'sanitize_option_' . $field_id, function ( $value ) use ( $args ) {
+							$sanitize_callback = array_pop( $args );
+							array_unshift( $args, $value );
+							return call_user_func_array( $sanitize_callback, $args );
+						}, 10, 3 );
+					}
+
 					// Add field to page
-					//if  {
-						add_settings_field(
-							$field['id'],
-							$field['label'],
-							[ $this, 'render_field' ],
-							$page_slug,
-							$tab_id,
-							[
-								'field' => $field,
-								'class' => ( $field['type'] === 'hidden' ) ? 'hidden_field' : '',
-							]
-						);
-					//}
+					add_settings_field(
+						$field['id'],
+						$field['label'],
+						[ $this, 'render_field' ],
+						$page_slug,
+						$tab_id,
+						[
+							'field' => $field,
+							'class' => ( $field['type'] === 'hidden' ) ? 'hidden_field' : '',
+						]
+					);
 				}
 
 				if ( ! $current_tab ) break;
@@ -347,18 +360,19 @@ class _WP_Admin_Page {
 	}
 
 	public function add_field ( $data ) {
-		$tab = 'default';
+		$defaults = [
+			'id' => '',
+			'sanitize_callback' => '',
+			'tab' => $this->get_default_tab(),
+		];
+		$data = array_merge( $defaults, $data );
 
 		if ( empty ( $data['id'] ) ) {
-			$data['id'] = '__invalid__' . rand();
+			$data['id'] = '__invalid__' . rand(0, 2147483647);
 			$data['type'] = '__invalid__';
 			$data['error_message'] = 'All fields requires a "id" parameter.';
 		} else {
 			$data['id'] = $this->set_field_name( $data['id'] );
-		}
-
-		if ( empty( $data['tab'] ) ) {
-			$data['tab'] = $this->default_tab;
 		}
 
 		if ( empty( $this->tabs[ $data['tab'] ] ) ) {
@@ -366,8 +380,16 @@ class _WP_Admin_Page {
 			$this->set_tab( [ 'id' => $data['tab'] ] );
 		}
 
+		$data['__ENABLED__'] = true;
+
+		// store the field
 		$this->fields[ $data['id'] ] = $data;
 		$this->tabs[ $data['tab'] ]['fields'][] = $data;
+
+		// return the prefixed input name
+		// useful to use with hooks that requires the field id
+		// e.g: sanitize_option_{$field_id} and default_option_{$field_id}
+		return $data['id'];
 	}
 
 	public function set_tab ( $data ) {
@@ -380,27 +402,21 @@ class _WP_Admin_Page {
 		];
 		$data = array_merge( $defaults, $data );
 
-		if ( empty( $data['id'] ) ) return;
+		if ( empty( $data['id'] ) ) {
+			throw new Exception( 'All tabs requires an "id" parameter.' );
+		}
 
 		if ( empty( $data['name'] ) ) {
 			$data['name'] = ucfirst( $data['id'] );
 		}
 
-		if ( is_null( $this->default_tab ) && empty( $this->tabs ) ) {
+		if ( empty( $this->default_tab ) && empty( $this->tabs ) ) {
 			$this->default_tab = $data['id'];
 		}
 
 		$this->tabs[ $data['id'] ] = $data;
-	}
 
-	public function unset_tab ( $tab_id ) {
-		if ( ! empty( $this->tabs[ $tab_id ] ) ) {
-			unset( $this->tabs[ $tab_id ] );
-
-			if ( empty( $this->tabs ) ) {
-				$this->default_tab = null;
-			}
-		}
+		return $data['id'];
 	}
 
 	public function get_hook_suffix () {
@@ -440,8 +456,15 @@ class _WP_Admin_Page {
 			}
 		}
 		if ( ! $current ) {
-			$current = $this->default_tab;
+			$current = $this->get_default_tab();
 		}
 		return $current;
+	}
+
+	public function get_default_tab () {
+		if ( empty( $this->default_tab ) ) {
+			$this->default_tab = $this->set_tab( 'default' );
+		}
+		return $this->default_tab;
 	}
 }
