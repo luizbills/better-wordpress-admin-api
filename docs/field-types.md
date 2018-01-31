@@ -1,4 +1,4 @@
-# Better WordPress Admin API
+# Better WordPress Admin API Documentation
 
 ## Field types
 
@@ -17,7 +17,7 @@
 ![Text field](assets/field-text.png)
 
 ```php
-$page->add_field([
+$the_page->add_field([
 
     //'tab => 'default',
 
@@ -47,7 +47,7 @@ $page->add_field([
 ![Select field](assets/field-select.png)
 
 ```php
-$page->add_field([
+$the_page->add_field([
 
     //'tab => 'default',
 
@@ -76,7 +76,7 @@ $page->add_field([
 ![Checkbox field](assets/field-checkbox.png)
 
 ```php
-$page->add_field([
+$the_page->add_field([
 
     //'tab => 'default',
 
@@ -87,20 +87,23 @@ $page->add_field([
     'default' => '',
 
     //'before'  => 'html rendered before the checkbox',
-    'after'   => 'html rendered after the checkbox',
+    //'after'   => 'html rendered after the checkbox',
 
     // sanitize_callback => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
-> Note: use the "after" parameter as label for the checkbox.
+Notes:
+
+- A checked checkbox will saved as `'on'`. If you need a checkbox checked by default, use `'default' => 'on'`.
+- To put a label after the checkbox, use an "after" parameter: `'after' => 'my checkbox label'`
 
 ### Radio
 
 ![Radio field](assets/field-radio.png)
 
 ```php
-$page->add_field([
+$the_page->add_field([
 
     //'tab => 'default',
 
@@ -127,7 +130,7 @@ $page->add_field([
 ### Hidden
 
 ```php
-$page->add_field([
+$the_page->add_field([
 
     //'tab => 'default',
 
@@ -149,7 +152,7 @@ Code editor powered by [ace](https://ace.c9.io/).
 ![Code field](assets/field-code.png)
 
 ```php
-$page->add_field([
+$the_page->add_field([
 
     //'tab => 'default',
 
@@ -174,7 +177,7 @@ $page->add_field([
 
 ### HTML
 
-![HTML field](assets/html-code.png)
+![HTML field](assets/field-html.png)
 
 ```php
 $the_page->add_field([
@@ -184,6 +187,7 @@ $the_page->add_field([
     'type'    => 'html',
     'id'      => 'html_field',
     'label'   => 'My HTML field',
+    'desc'    => 'some description.',
     'default' => '',
 
     'content' => 'custom_render_html_field',
@@ -200,11 +204,13 @@ function custom_render_html_field ( $field, $the_page ) {
 }
 ```
 
-Note: `html` fields don't has `before`, `after` parameters.
+Notes:
+
+- `html` fields don't has `before` or `after` parameters.
 
 ### Color
 
-![Color field](assets/color-code.png)
+![Color field](assets/field-color.png)
 
 ```php
 $the_page->add_field( [
@@ -227,7 +233,7 @@ $the_page->add_field( [
 
 TinyMCE content editor.
 
-![Content field](assets/color-content.png)
+![Content field](assets/field-content.png)
 
 ```php
 $the_page->add_field( [
