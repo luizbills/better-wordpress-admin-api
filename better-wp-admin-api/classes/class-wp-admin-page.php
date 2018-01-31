@@ -239,7 +239,7 @@ class _WP_Admin_Page {
 
 		<div class="wrap" id="<?php echo esc_attr( $page_slug ); ?>">
 
-			<?php do_action( 'wp_better_admin_api_before-' . $this->hook_suffix, $this ); ?>
+			<?php do_action( 'better_wp_admin_api_before-' . $this->hook_suffix, $this ); ?>
 
 			<?php if ( count( $this->tabs ) > 1 ) {
 				$this->render_tabs();
@@ -247,7 +247,7 @@ class _WP_Admin_Page {
 
 			<form action="options.php" method="post" enctype="multipart/form-data">
 
-				<?php do_action( 'wp_better_admin_api_form_start-' . $this->hook_suffix, $this ); ?>
+				<?php do_action( 'better_wp_admin_api_form_start-' . $this->hook_suffix, $this ); ?>
 
 				<?php
 				settings_fields( $page_slug );
@@ -256,13 +256,13 @@ class _WP_Admin_Page {
 
 				<input type="hidden" name="tab" value="<?php echo esc_attr( $current_tab ); ?>" />
 
-				<?php do_action( 'wp_better_admin_api_form_end-' . $this->hook_suffix, $this ); ?>
+				<?php do_action( 'better_wp_admin_api_form_end-' . $this->hook_suffix, $this ); ?>
 
 				<?php submit_button( $tab_data['submit_label'] ); ?>
 
 			</form>
 
-			<?php do_action( 'wp_better_admin_api_after-' . $this->hook_suffix, $this ); ?>
+			<?php do_action( 'better_wp_admin_api_after-' . $this->hook_suffix, $this ); ?>
 
 		</div>
 
@@ -279,6 +279,26 @@ class _WP_Admin_Page {
 
 		$field_settings = array_merge( $field, $field_settings );
 
+		$field_type = $field['type'];
+		$renderer = "_WP_Field_Renderer::render_${field_type}_field";
+
+		if ( is_callable( $renderer ) ) {
+			call_user_func( $renderer, $field_settings );
+		} else {
+			// used to made custom fields
+			$field_settings = apply_filters( "better_wp_admin_api_field_${field_type}_settings", $field_settings );
+			$field_output = apply_filters( "better_wp_admin_api_field_${field_type}_output", false, $field_settings );
+
+			if ( $field_output !== false ) {
+				// print a custom field
+				echo $field_output;
+			} else {
+				// print an undefined field notice
+				echo "<pre><code>Undefined \"${field_type}\" field type.</code></pre>";
+			}
+		}
+
+		return;
 		switch( $field['type'] ) {
 			case 'text':
 			case 'url':
@@ -487,7 +507,7 @@ class _WP_Admin_Page {
 		if ( ! empty( $field ) ) {
 			$value = get_option( $field_id, false );
 			if ( $value === false ) {
-				$value = apply_filters( 'wp_better_admin_api_field_default_value', $field['default'], $field, $this );
+				$value = apply_filters( 'better_wp_admin_api_field_default_value', $field['default'], $field, $this );
 			} elseif ( empty( $value ) ) {
 				$value = '';
 			}

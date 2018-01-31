@@ -50,6 +50,19 @@ $my_page->on_setup( function ( $the_page, $hook_suffix ) {
     ]);
 
     $the_page->add_field([
+        'type'    => 'checkbox_multi',
+        'id'      => 'checkbox_multi_field',
+        'label'   => __( 'My Multiple Checkboxes field' ),
+        'desc'    => __( 'some description.' ),
+        'default' => '',
+        'choices' => [
+            'banana'    => 'Banana',
+            'apple'     => 'Apple',
+            'orange'    => 'Orange',
+        ],
+    ]);
+
+    $the_page->add_field([
         'type'    => 'radio',
         'id'      => 'radio_field',
         'label'   => 'My Radio fields',

@@ -70,18 +70,19 @@ Generates:
 
 ![basic usage example page](docs/assets/page-usage-example.png)
 
-More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree/master/examples) folder.
+More at [examples](/examples) folder.
 
 ### Avaliable field types
 
 - `text` (text-based inputs: text, email, url, ...)
 - `select`
 - `checkbox` (single checkbox)
+- `checkbox_multi` (multiple checkboxes)
 - `radio`
 - `hidden` (for **input[type="hidden"]**)
 - `code` (code editor powered by [ace](https://ace.c9.io/))
 - `html` (useful to create your own field template)
-- `color`
+- `color` (color picker)
 - `content` (default WordPress TinyMCE editor)
 
 ## Documentation
@@ -90,12 +91,12 @@ More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree
 
 ## Roadmap
 
-- [ ] Upload field
-- [ ] Multiple checkboxes
 - [x] ~~Color picker~~
 - [x] ~~TinyMCE editor~~
 - [x] ~~Fields Documentation~~
+- [x] ~~Multiple checkboxes~~
 - [ ] Hooks Documentation
+- [ ] Upload field
 
 ## LICENSE
 

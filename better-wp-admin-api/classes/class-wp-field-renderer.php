@@ -20,9 +20,11 @@ class _WP_Field_Renderer {
 	public static function render_invalid_field ( $settings, $echo = true ) {
 		ob_start();
 		?>
+
 		<pre><code>Invalid field declaration. <?php echo esc_html( $settings['error_message'] ); ?></code></pre>
+
 		<?php
-		$html = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_invalid_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -31,7 +33,7 @@ class _WP_Field_Renderer {
 
 	public static function render_text_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-text', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_text_settings', $settings );
 
 		$settings['props'] = empty( $settings['props'] ) ? [] : $settings['props'];
 		$settings['props'] = array_merge(
@@ -76,11 +78,11 @@ class _WP_Field_Renderer {
 
 		$html .= self::get_html_template( $settings['after'], false, [ $settings ] ) . "\n";
 
-
 		if ( isset( $settings['desc'] ) ) {
 			$html .= '<p class="description">' . self::render_description( $settings['desc'], true, false ) . '</p>';
 		}
 
+		$html = apply_filters( 'better_wp_admin_api_field_text_output', $html, $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -89,13 +91,13 @@ class _WP_Field_Renderer {
 
 	public static function render_select_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-select', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_select_settings', $settings );
 
 		extract( $settings );
 		ob_start();
 		echo self::get_html_template( $settings['before'], false, [ $settings ] );
 		?>
-		<select name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
+		<select multiple name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
 
 			<?php
 			foreach( $choices as $choice_value => $choice_label ) {
@@ -123,14 +125,14 @@ class _WP_Field_Renderer {
 		<?php endif; ?>
 		<?php
 
-		$html = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_select_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
 		echo $html;
 	}
 
-	public static function render_option_select ( $label, $value, $selected = false, $echo = true ) {
+	protected static function render_option_select ( $label, $value, $selected = false, $echo = true ) {
 		ob_start();
 		?>
 
@@ -151,7 +153,7 @@ class _WP_Field_Renderer {
 
 	public static function render_checkbox_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-checkbox', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_checkbox_settings', $settings );
 
 		extract( $settings );
 		ob_start();
@@ -177,7 +179,64 @@ class _WP_Field_Renderer {
 		</fieldset>
 		<?php
 
-		$html = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_checkbox_output', ob_get_clean(), $settings );
+		if ( ! $echo ) {
+			return $html;
+		}
+		echo $html;
+	}
+
+	public static function render_checkbox_multi_field ( $settings, $echo = true ) {
+		$settings = array_merge( self::$default_fields, $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_checkbox_multi_settings', $settings );
+
+		extract( $settings );
+
+		if ( is_string( $value ) && strlen( $value ) > 0 ) {
+			// make an array of default values
+			$default_array = explode( ',', $default );
+			$default_array = array_filter( array_map( 'trim', $default_array ) );
+			$value = $default_array;
+		}
+
+		ob_start();
+		?>
+
+		<fieldset>
+			<legend class="screen-reader-text">
+				<span><?php echo esc_html( $label ); ?></span>
+			</legend>
+			<label for="<?php echo esc_attr( $id ); ?>">
+				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
+
+				<div class="checkboxes">
+
+					<?php foreach ( $choices as $choice_value => $choice_label ) : ?>
+
+					<label>
+					<input
+						type="checkbox"
+						name="<?php echo esc_attr( $id ); ?>[]"
+						id="<?php echo esc_attr( $id . '-' . $choice_value ); ?>"
+						value="<?php echo esc_attr( $choice_value ); ?>"
+						<?php empty( $value ) ? '' : checked( in_array( $choice_value, $value ), true ); ?>
+					>
+					<?php echo self::get_html_template( $choice_label, false, [ $settings ] ); ?>
+					</label>
+					<br>
+
+					<?php endforeach; ?>
+
+				</div><!-- /.checkboxes -->
+				<?php echo self::get_html_template( $settings['after'], false, [ $settings ] ); ?>
+				<?php if ( ! empty( $desc ) ) : ?>
+				<p class="description"><?php self::render_description( $desc ); ?></p>
+				<?php endif; ?>
+			</label>
+		</fieldset>
+		<?php
+
+		$html = apply_filters( 'better_wp_admin_api_field_checkbox_multi_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -186,7 +245,7 @@ class _WP_Field_Renderer {
 
 	public static function render_radio_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-radio', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_radio_settings', $settings );
 
 		extract( $settings );
 		ob_start();
@@ -223,7 +282,7 @@ class _WP_Field_Renderer {
 		<?php endif; ?>
 
 		<?php
-		$html = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_radio_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -232,7 +291,7 @@ class _WP_Field_Renderer {
 
 	public static function render_hidden_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-hidden', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_hidden_settings', $settings );
 
 		extract( $settings );
 		ob_start();
@@ -245,7 +304,7 @@ class _WP_Field_Renderer {
 		<?php
 		echo self::get_html_template( $settings['after'], false, [ $settings ] );
 
-		$html = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_hidden_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -254,7 +313,7 @@ class _WP_Field_Renderer {
 
 	public static function render_code_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-code', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_code_settings', $settings );
 
 		$settings['lang'] = empty( $settings['lang'] ) ? 'text' : $settings['lang'];
 		$settings['theme'] = empty( $settings['theme'] ) ? 'monokai' : $settings['theme'];
@@ -294,17 +353,16 @@ class _WP_Field_Renderer {
 		<?php endif; ?>
 
 		<?php
-		$field = ob_get_clean();
-
+		$html = apply_filters( 'better_wp_admin_api_field_code_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
-			return $field;
+			return $html;
 		}
-		echo $field;
+		echo $html;
 	}
 
 	public static function render_color_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-color', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_color_settings', $settings );
 
 		extract( $settings );
 		ob_start();
@@ -326,17 +384,16 @@ class _WP_Field_Renderer {
 		<p class="description"><?php self::render_description( $desc ); ?></p>
 		<?php endif;
 
-		$field = ob_get_clean();
-
+		$html = apply_filters( 'better_wp_admin_api_field_color_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
-			return $field;
+			return $html;
 		}
-		echo $field;
+		echo $html;
 	}
 
 	public static function render_content_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-content', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_content_settings', $settings );
 
 		$settings['height'] = empty( $settings['height'] ) ? '200' : $settings['height'];
 		$settings['wpautop'] = empty( $settings['wpautop'] ) ? true : $settings['wpautop'];
@@ -364,16 +421,16 @@ class _WP_Field_Renderer {
 		<?php
 		endif;
 
-		$field = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_content_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
-			return $field;
+			return $html;
 		}
-		echo $field;
+		echo $html;
 	}
 
 	public static function render_html_field ( $settings, $echo = true ) {
 		$settings = array_merge( self::$default_fields, $settings );
-		$settings = apply_filters( 'wp_better_admin_api_field_settings-html', $settings );
+		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
 
 		if ( empty( $settings['content'] ) ) {
 			$settings['content'] = '<pre><code>Missing "content" argument.</code></pre>';
@@ -389,7 +446,7 @@ class _WP_Field_Renderer {
 		<?php
 		endif;
 
-		$html = ob_get_clean();
+		$html = apply_filters( 'better_wp_admin_api_field_html_output', ob_get_clean(), $settings );
 		if ( ! $echo ) {
 			return $html;
 		}
@@ -397,14 +454,14 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_description ( $text, $use_markdown = true, $echo = true ) {
-		$use_markdown = apply_filters( 'wp_better_admin_api_description_with_markdown', $use_markdown, $text );
-		$text = apply_filters( 'wp_better_admin_api_description_text', $text );
+		$use_markdown = apply_filters( 'better_wp_admin_api_render_description_use_markdown', $use_markdown, $text );
+		$text = apply_filters( 'better_wp_admin_api_render_description_text', $text );
 		if ( $use_markdown ) {
 			$Parsedown = new Parsedown();
 			$text = $Parsedown->line( $text );
 		}
 		$output = self::get_html_template( $text, true );
-		$output = apply_filters( 'wp_better_admin_api_description_output', $output, $text, $use_markdown );
+		$output = apply_filters( 'better_wp_admin_api_render_description_output', $output, $text, $use_markdown );
 		if ( ! $echo ) {
 			return $output;
 		}
