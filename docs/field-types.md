@@ -175,7 +175,9 @@ $the_page->add_field([
 ]);
 ```
 
-> You can check all *themes* and *modes* (languages) here: https://github.com/ajaxorg/ace-builds/tree/master/src
+Notes:
+
+- List of all *themes* and *modes* (languages): https://github.com/ajaxorg/ace-builds/tree/master/src
 
 ### HTML
 
