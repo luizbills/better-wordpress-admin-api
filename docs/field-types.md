@@ -87,7 +87,7 @@ $the_page->add_field([
     'default' => '',
 
     //'before'  => 'html rendered before the checkbox',
-    //'after'   => 'html rendered after the checkbox',
+    'after'   => 'html rendered after the checkbox',
 
     // sanitize_callback => 'custom_callback_to_sanitize_this_field',
 ]);
@@ -128,6 +128,8 @@ $the_page->add_field([
 ```
 
 ### Hidden
+
+![Hidden field](assets/field-hidden.png)
 
 ```php
 $the_page->add_field([
