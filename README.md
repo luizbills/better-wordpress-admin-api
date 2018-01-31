@@ -103,6 +103,8 @@ More at [examples](/examples) folder.
 - [x] ~~Multiple checkboxes~~
 - [ ] Hooks Documentation
 - [ ] Upload field
+- [ ] Metaboxes
+- [ ] Customizer fields (maybe)
 
 ## LICENSE
 
