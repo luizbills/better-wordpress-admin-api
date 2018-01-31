@@ -31,12 +31,12 @@ $page_args = [
     'options_prefix'    => 'my_prefix_',
 
     // use "parent" parameter to create as a sub-menu
-    //'parent' => 'options-general.php',
     //'parent' => 'themes.php',
 
     // more options...
     //'icon'              => 'dashicons-admin-post',
     //'position'          => 10,
+    //'capability'        => 'manage_options',
 ];
 
 // create the page
