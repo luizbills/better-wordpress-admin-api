@@ -1,6 +1,6 @@
 # Better WordPress Admin API
 
-A better way to build options pages for you plugins/themes.
+A better way to build admin pages and options for you plugins/themes.
 
 ## Installation
 
