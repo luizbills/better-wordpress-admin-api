@@ -66,6 +66,10 @@ $text_field = $my_page->get_field_value( 'text_field' );
 $text_field = $my_page->get_field_value( 'my_prefix_text_field' );
 ```
 
+Generates:
+
+![basic usage example page](docs/assets/page-usage-example.png)
+
 More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree/master/examples) folder.
 
 ### Avaliable field types
@@ -86,11 +90,11 @@ More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree
 
 ## Roadmap
 
-- [ ] Image upload field
+- [ ] Upload field
 - [ ] Multiple checkboxes
 - [x] ~~Color picker~~
 - [x] ~~TinyMCE editor~~
-- [ ] Field Documentation
+- [x] Field Documentation
 - [ ] Hooks Documentation
 
 ## LICENSE
