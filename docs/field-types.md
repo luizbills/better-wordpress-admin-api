@@ -19,7 +19,7 @@
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'text',
     'id'      => 'text_field',
@@ -38,7 +38,7 @@ $the_page->add_field([
     //'before'  => 'html rendered before <input>',
     //'after'   => 'html rendered after <input>',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
@@ -49,7 +49,7 @@ $the_page->add_field([
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'select',
     'id'      => 'select_field',
@@ -67,7 +67,7 @@ $the_page->add_field([
     //'before'  => 'html rendered before <select>',
     //'after'   => 'html rendered after </select>',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
@@ -78,7 +78,7 @@ $the_page->add_field([
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'checkbox',
     'id'      => 'checkbox_field',
@@ -89,7 +89,7 @@ $the_page->add_field([
     //'before'  => 'html rendered before the checkbox',
     'after'   => 'html rendered after the checkbox',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
@@ -98,6 +98,39 @@ Notes:
 - A checked checkbox will saved as `'on'`. If you need a checkbox checked by default, use `'default' => 'on'`.
 - To put a label after the checkbox, use an "after" parameter: `'after' => 'my checkbox label'`
 
+### Multiple Checkboxes
+
+![Checkbox field](assets/field-checkbox.png)
+
+```php
+$the_page->add_field([
+
+    //'tab' => 'default',
+
+    'type'    => 'checkbox_multi',
+    'id'      => 'checkbox_multi_field',
+    'label'   => __( 'My Multiple Checkboxes field' ),
+    'desc'    => __( 'some description.' ),
+    // separate the default values with a comma
+    //'default' => 'banana, apple',
+
+    'choices' => [
+        'banana'    => 'Banana',
+        'apple'     => 'Apple',
+        'orange'    => 'Orange',
+    ],
+
+    //'before'  => 'html rendered before all checkboxes',
+    //'after'   => 'html rendered after all checkboxes',
+
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
+]);
+```
+
+Notes:
+
+- The checked checkboxes will saved into a `Array`.
+
 ### Radio
 
 ![Radio field](assets/field-radio.png)
@@ -105,7 +138,7 @@ Notes:
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'radio',
     'id'      => 'radio_field',
@@ -120,10 +153,10 @@ $the_page->add_field([
         'IT'    => 'Italy',
     ],
 
-    //'before'  => 'html rendered before the checkbox',
-    //'after'   => 'html rendered after the checkbox',
+    //'before'  => 'html rendered before the radio input',
+    //'after'   => 'html rendered after the radio input',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
@@ -134,7 +167,7 @@ $the_page->add_field([
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'hidden',
     'id'      => 'hidden_field',
@@ -143,7 +176,7 @@ $the_page->add_field([
     //'before'  => 'html rendered before the <input>',
     //'after'   => 'html rendered after the <input>',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
@@ -156,7 +189,7 @@ Code editor powered by [ace](https://ace.c9.io/).
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'code',
     'id'      => 'code_field',
@@ -168,10 +201,10 @@ $the_page->add_field([
     //'theme'   => 'monokai',
     //'height'  => 200,
 
-    //'before'  => 'html rendered before the checkbox',
-    //'after'   => 'html rendered after the checkbox',
+    //'before'  => 'html rendered before the code editor',
+    //'after'   => 'html rendered after the code editor',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 ```
 
@@ -186,7 +219,7 @@ Notes:
 ```php
 $the_page->add_field([
 
-    //'tab => 'default',
+    //'tab' => 'default',
 
     'type'    => 'html',
     'id'      => 'html_field',
@@ -196,7 +229,7 @@ $the_page->add_field([
 
     'content' => 'custom_render_html_field',
 
-    //sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
 
 function custom_render_html_field ( $field, $the_page ) {
@@ -218,7 +251,7 @@ Notes:
 
 ```php
 $the_page->add_field( [
-    //'tab' => 'default',
+    //'tab'' => 'default',
 
     'type'    => 'color',
     'id'      => 'color_field',
@@ -226,10 +259,10 @@ $the_page->add_field( [
     'desc'    => 'some description.',
     'default' => '#fff',
 
-    //'before'  => 'html rendered before the checkbox',
-    //'after'   => 'html rendered after the checkbox',
+    //'before'  => 'html rendered before the color picker',
+    //'after'   => 'html rendered after the color picker',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ] );
 ```
 
@@ -241,7 +274,7 @@ TinyMCE content editor.
 
 ```php
 $the_page->add_field( [
-    //'tab' => 'default',
+    //'tab'' => 'default',
 
     'type'    => 'content',
     'id'      => 'content_field',
@@ -252,9 +285,9 @@ $the_page->add_field( [
     //'height'  => 200,
     //'wpautop' => true,
 
-    //'before'  => 'html rendered before the checkbox',
-    //'after'   => 'html rendered after the checkbox',
+    //'before'  => 'html rendered before the editor',
+    //'after'   => 'html rendered after the editor',
 
-    // sanitize_callback => 'custom_callback_to_sanitize_this_field',
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ] );
 ```
