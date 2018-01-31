@@ -5,6 +5,7 @@
 - [Text](#text)
 - [Select](#select)
 - [Checkbox](#checkbox)
+- [Multiple Checkboxes](#multiple-checkboxes)
 - [Radio](#radio)
 - [Hidden](#hidden)
 - [Code](#code)
@@ -100,7 +101,7 @@ Notes:
 
 ### Multiple Checkboxes
 
-![Checkbox field](assets/field-checkbox.png)
+![Checkbox field](assets/field-checkbox-multi.png)
 
 ```php
 $the_page->add_field([
