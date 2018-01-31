@@ -94,7 +94,7 @@ More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree
 - [ ] Multiple checkboxes
 - [x] ~~Color picker~~
 - [x] ~~TinyMCE editor~~
-- [x] Field Documentation
+- [x] ~~Fields Documentation~~
 - [ ] Hooks Documentation
 
 ## LICENSE
