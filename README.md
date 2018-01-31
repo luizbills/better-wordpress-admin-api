@@ -20,8 +20,8 @@ include_once 'path/to/better-wp-admin-api/init.php';
 ```php
 include_once __DIR__ . '/path/to/your/better-wp-admin-api/init.php';
 
-// creates a page
-$my_page = wp_create_admin_page( [
+// page details
+$page_args = [
     'menu_name'         => 'My Page',
 
     // page slug
@@ -37,16 +37,19 @@ $my_page = wp_create_admin_page( [
     // more options...
     //'icon'              => 'dashicons-admin-post',
     //'position'          => 10,
-] );
+];
 
-// hook your setup function
+// create the page
+$my_page = wp_create_admin_page( $page_args );
+
+// hook a setup function
 $my_page->on_setup( 'my_prefix_setup_my_page' );
 
-// setup your page (add fields, add hooks, etc)
+// setup the page (add fields, add hooks, etc)
 function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
-
-    // creates a text field on this page
-    $the_page->add_field( [
+    
+    // field details
+    $field_args = [
         'type'      => 'text',
         'id'        => 'text_field',
         'label'     => 'Text field',
@@ -56,14 +59,17 @@ function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
             'placeholder' => 'type something...'
         ],
         //'default' => 'hello world',
-    ] );
-
+    ];
+    
+    // creates a text field
+    $the_page->add_field( $field_args );
 }
 
 // access the field value
-$text_field = $my_page->get_field_value( 'text_field' );
-// or
-$text_field = $my_page->get_field_value( 'my_prefix_text_field' );
+$text_field_value = $my_page->get_field_value( 'text_field' );
+
+// or with your prefix used above on $page_details
+$text_field_value = $my_page->get_field_value( 'my_prefix_text_field' );
 ```
 
 Generates:
