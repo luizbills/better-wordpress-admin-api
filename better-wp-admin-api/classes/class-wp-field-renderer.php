@@ -379,8 +379,17 @@ class _WP_Field_Renderer {
 			$settings['content'] = '<pre><code>Missing "content" argument.</code></pre>';
 		}
 
-		$html = '<div class="html">' . self::get_html_template( $settings['content'], false, [ $settings, $settings['__PAGE__'] ] ) . '</div>';
+		ob_start();
 
+		echo self::get_html_template( $settings['content'], false, [ $settings, $settings['__PAGE__'] ] );
+
+		if ( ! empty( $settings['desc'] ) ) :
+		?>
+		<p class="description"><?php self::render_description( $settings['desc'] ); ?></p>
+		<?php
+		endif;
+
+		$html = ob_get_clean();
 		if ( ! $echo ) {
 			return $html;
 		}
