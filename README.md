@@ -100,3 +100,7 @@ More at [/examples](https://github.com/luizbills/better-wordpress-admin-api/tree
 ## LICENSE
 
 GPL v2
+
+---
+
+Made with ❤ in Brazil
