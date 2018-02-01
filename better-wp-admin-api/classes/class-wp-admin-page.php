@@ -521,6 +521,8 @@ class _WP_Admin_Page {
 			} elseif ( empty( $value ) ) {
 				$value = '';
 			}
+		} else {
+			throw new Exception("Trying to get value of an undefined field with id: '$field_id'");
 		}
 
 		return $value;
