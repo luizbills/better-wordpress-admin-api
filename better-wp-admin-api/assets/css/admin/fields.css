@@ -1,3 +1,7 @@
+.wrap h2.nav-tab-wrapper {
+    margin-bottom: 10px;
+}
+
 .hidden_field {
     display: none!important;
 }

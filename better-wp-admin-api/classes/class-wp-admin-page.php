@@ -84,9 +84,9 @@ class _WP_Admin_Page {
 			$this->hook_suffix = add_submenu_page( $parent, $menu_title, $menu_title, $capability, $slug, $callback );
 		}
 
-		$this->do_setup();
-
 		add_action( 'admin_print_styles-' . $this->hook_suffix, array( $this, 'enqueue_assets' ) );
+
+		$this->do_setup();
 	}
 
 	public function register_settings () {
@@ -114,27 +114,30 @@ class _WP_Admin_Page {
 						continue;
 					}
 
-					// Register field
-					register_setting(
-						$page_slug,
-						$field['id']
-					);
 
+					$sanitize_callback = null;
 					if ( is_callable( $field['sanitize_callback'] ) ) {
 						$field_id = $field['id'];
 						$the_page = $this;
-						$sanitize_callback = $field['sanitize_callback'];
+						$callback = $field['sanitize_callback'];
 						$args = [
 							$field_id,
 							$the_page,
-							$sanitize_callback,
+							$callback,
 						];
-						add_filter( 'sanitize_option_' . $field_id, function ( $value ) use ( $args ) {
-							$sanitize_callback = array_pop( $args );
+						$sanitize_callback = function ( $value ) use ( $args ) {
+							$callback = array_pop( $args );
 							array_unshift( $args, $value );
-							return call_user_func_array( $sanitize_callback, $args );
-						}, 10, 3 );
+							return call_user_func_array( $callback, $args );
+						};
 					}
+
+					// Register field
+					register_setting(
+						$page_slug,
+						$field['id'],
+						$sanitize_callback
+					);
 
 					// Add field to page
 					add_settings_field(
@@ -154,7 +157,6 @@ class _WP_Admin_Page {
 
 				if ( ! $current_tab ) break;
 			}
-			//$this->do_setup();
 		}
 	}
 
@@ -164,12 +166,9 @@ class _WP_Admin_Page {
 
 		settings_errors();
 
-		// prevent duplicates
-		foreach ( (array) $wp_settings_errors as $key => $details ) {
-			if ( 'general' === $details['setting'] ) {
-				unset( $wp_settings_errors[ $key ] );
-				break;
-			}
+		// prevent duplicates (I don't know why this is necessary)
+		foreach ( (array) $wp_settings_errors as $key => $__ ) {
+			unset( $wp_settings_errors[ $key ] );
 		}
 	}
 
@@ -306,60 +305,6 @@ class _WP_Admin_Page {
 				// print an undefined field notice
 				echo "<pre><code>Undefined \"${field_type}\" field type.</code></pre>";
 			}
-		}
-
-		return;
-		switch( $field['type'] ) {
-			case 'text':
-			case 'url':
-			case 'email':
-				_WP_Field_Renderer::render_text_field( $field_settings );
-			break;
-
-			case 'select':
-				_WP_Field_Renderer::render_select_field( $field_settings );
-			break;
-
-			case 'checkbox':
-				_WP_Field_Renderer::render_checkbox_field( $field_settings );
-			break;
-
-			case 'radio':
-				_WP_Field_Renderer::render_radio_field( $field_settings );
-			break;
-
-			case 'hidden':
-				_WP_Field_Renderer::render_hidden_field( $field_settings );
-			break;
-
-			case 'code':
-				_WP_Field_Renderer::render_code_field( $field_settings );
-			break;
-
-			case 'color':
-				_WP_Field_Renderer::render_color_field( $field_settings );
-			break;
-
-			case 'content':
-				_WP_Field_Renderer::render_content_field( $field_settings );
-			break;
-
-			//case 'image':
-				// TODO
-				//_WP_Field_Renderer::render_image_field( $field_settings );
-			//break;
-
-			case 'html':
-				_WP_Field_Renderer::render_html_field( $field_settings );
-			break;
-
-			case '__invalid__':
-				_WP_Field_Renderer::render_invalid_field( $field_settings );
-			break;
-
-			default:
-				echo '<pre><code>Undefined field type.</code></pre>';
-			break;
 		}
 	}
 
