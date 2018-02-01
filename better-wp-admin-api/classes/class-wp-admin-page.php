@@ -507,6 +507,8 @@ class _WP_Admin_Page {
 		$value = '';
 
 		foreach ( $possible_ids as $_id ) {
+			if ( ! isset( $this->fields[ $_id ] ) ) continue;
+
 			$field = $this->fields[ $_id ];
 
 			if ( ! empty( $field ) ) {
