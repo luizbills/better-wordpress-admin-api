@@ -145,7 +145,9 @@ class _WP_Admin_Page {
 						$current_section,
 						[
 							'field' => $field,
-							'class' => ( $field['type'] === 'hidden' ) ? 'hidden_field' : '',
+							'class' => ( $field['type'] === 'hidden' )
+								? $field['wrapper_class'] . ' hidden_field'
+								: $field['wrapper_class'],
 						]
 					);
 				}
@@ -248,7 +250,12 @@ class _WP_Admin_Page {
 				$this->render_tabs();
 			} ?>
 
-			<form action="options.php" method="post" enctype="multipart/form-data">
+			<form
+				id="<?php echo esc_attr( $page_slug ); ?>-form"
+				action="options.php"
+				method="post"
+				enctype="multipart/form-data"
+			>
 
 				<?php do_action( 'better_wp_admin_api_form_start-' . $this->hook_suffix, $this ); ?>
 
@@ -412,6 +419,7 @@ class _WP_Admin_Page {
 			'sanitize_callback' => '',
 			'tab'               => $this->default_tab,
 			'default'           => false,
+			'wrapper_class'     => '',
 		];
 		$data = array_merge( $defaults, $data );
 
