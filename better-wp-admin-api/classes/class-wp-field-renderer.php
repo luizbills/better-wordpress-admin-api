@@ -4,7 +4,7 @@ if ( ! defined( 'WPINC' ) ) die;
 
 class _WP_Field_Renderer {
 
-	protected static $default_fields = [
+	protected static $field_defaults = [
 		'id' => '',
 		'label' => '',
 		'desc' => '',
@@ -32,10 +32,12 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_text_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$defaults = [
+			'props' => [],
+		];
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_text_settings', $settings );
 
-		$settings['props'] = empty( $settings['props'] ) ? [] : $settings['props'];
 		$settings['props'] = array_merge(
 			[
 				'type' => 'text',
@@ -90,7 +92,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_select_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_select_settings', $settings );
 
 		extract( $settings );
@@ -152,7 +154,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_checkbox_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_checkbox_settings', $settings );
 
 		extract( $settings );
@@ -187,7 +189,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_checkbox_multi_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_checkbox_multi_settings', $settings );
 
 		extract( $settings );
@@ -244,7 +246,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_radio_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_radio_settings', $settings );
 
 		extract( $settings );
@@ -290,7 +292,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_hidden_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_hidden_settings', $settings );
 
 		extract( $settings );
@@ -317,12 +319,23 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_code_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$code_defaults = [
+			'lang'              => 'text',
+			'theme'             => 'eclipse',
+			'height'            => 200,
+			'font-size'         => 12,
+			'tab-size'          => 4,
+			'soft-tab'          => false,
+			'read-only'         => false,
+			'show-print-margin' => true
+		];
+		$settings = array_merge( self::$field_defaults, $code_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_code_settings', $settings );
 
-		$settings['lang'] = empty( $settings['lang'] ) ? 'text' : $settings['lang'];
-		$settings['theme'] = empty( $settings['theme'] ) ? 'monokai' : $settings['theme'];
-		$settings['height'] = empty( $settings['height'] ) ? '200' : intval( $settings['height'] );
+		$data_props = '';
+		foreach ( $code_defaults as $name => $__ ) {
+			$data_props .= 'data-code-editor-' . esc_attr( $name ) . '="' . esc_attr( $settings[ $name ] ) . '" ';
+		}
 
 		extract( $settings );
 		ob_start();
@@ -341,14 +354,13 @@ class _WP_Field_Renderer {
 				id="<?php echo esc_attr( $id ); ?>"
 				name="<?php echo esc_attr( $id ); ?>"
 				class="large-text code"
-				style="height: <?php echo esc_attr( $height ); ?>px;"
+				style="height: <?php echo esc_attr( $height ); ?>px;font-size: <?php echo esc_attr( $settings['font-size'] ); ?>px;"
 			><?php echo $value; ?></textarea>
 			<div
-				data-ace-for="<?php echo esc_attr( $id ); ?>"
-				data-ace-mode="<?php echo esc_attr( $lang ); ?>"
-				data-ace-theme="<?php echo esc_attr( $theme ); ?>"
-				data-ace-height="<?php echo esc_attr( $height ); ?>"
+				data-code-editor-for="<?php echo esc_attr( $id ); ?>"
+				<?php echo $data_props; ?>
 				class="code-editor"
+				style="height: <?php echo esc_attr( $height ); ?>px;font-size: <?php echo esc_attr( $settings['font-size'] ); ?>px;"
 			>
 			<?php echo self::get_html_template( $settings['after'], false, [ $settings ] ); ?>
 		</div>
@@ -366,7 +378,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_color_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_color_settings', $settings );
 
 		extract( $settings );
@@ -397,7 +409,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_content_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_content_settings', $settings );
 
 		$settings['height'] = empty( $settings['height'] ) ? '200' : $settings['height'];
@@ -434,7 +446,7 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_html_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$default_fields, $settings );
+		$settings = array_merge( self::$field_defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
 
 		if ( empty( $settings['content'] ) ) {
