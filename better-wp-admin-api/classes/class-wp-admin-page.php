@@ -32,11 +32,7 @@ class _WP_Admin_Page {
 	public function __construct ( $settings = [] ) {
 		$this->settings = $this->validate_settings( $settings );
 
-		// default tab
-		$this->default_tab = $this->set_tab( [
-			'id'    => 'default',
-			'name'  => ucfirst( $this->settings['menu_name'] ),
-		] );
+		$this->init();
 
 		$this->hooks();
 	}
@@ -49,6 +45,13 @@ class _WP_Admin_Page {
 		}
 
 		return $result;
+	}
+
+	protected function init () {
+		$this->set_tab( [
+			'id'    => 'default',
+			'name'  => ucfirst( $this->settings['menu_name'] ),
+		] );
 	}
 
 	protected function hooks () {
@@ -407,7 +410,7 @@ class _WP_Admin_Page {
 		$defaults = [
 			'id'                => '',
 			'sanitize_callback' => '',
-			'tab'               => $this->get_default_tab(),
+			'tab'               => $this->default_tab,
 			'default'           => false,
 		];
 		$data = array_merge( $defaults, $data );
@@ -448,7 +451,7 @@ class _WP_Admin_Page {
 			throw new Exception( 'All subtitles requires a "name" parameter.' );
 		}
 
-		$tab = empty( $tab ) ? $this->get_default_tab() : $tab;
+		$tab = empty( $tab ) ? $this->default_tab : $tab;
 
 		$field = $this->add_field( [
 			'type'   => 'subtitle',
@@ -477,11 +480,11 @@ class _WP_Admin_Page {
 			$data['name'] = ucfirst( $data['id'] );
 		}
 
-		if ( empty( $this->default_tab ) && empty( $this->tabs ) ) {
+		$this->tabs[ $data['id'] ] = $data;
+
+		if ( is_null( $this->default_tab ) ) {
 			$this->default_tab = $data['id'];
 		}
-
-		$this->tabs[ $data['id'] ] = $data;
 
 		return $data['id'];
 	}
@@ -532,15 +535,12 @@ class _WP_Admin_Page {
 			}
 		}
 		if ( ! $current ) {
-			$current = $this->get_default_tab();
+			$current = $this->default_tab;
 		}
 		return $current;
 	}
 
 	public function get_default_tab () {
-		if ( empty( $this->default_tab ) ) {
-			$this->default_tab = $this->set_tab( 'default' );
-		}
 		return $this->default_tab;
 	}
 }
