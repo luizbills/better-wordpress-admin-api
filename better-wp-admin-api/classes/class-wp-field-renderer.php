@@ -299,7 +299,12 @@ class _WP_Field_Renderer {
 		echo self::get_html_template( $settings['before'], false, [ $settings ] );
 		?>
 
-		<input type="hidden" name="<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $value ); ?>">
+		<input
+			type="hidden"
+			name="<?php echo esc_attr( $id ); ?>"
+			id="<?php echo esc_attr( $id ); ?>"
+			value="<?php echo esc_attr( $value );?>"
+		>
 
 		<?php
 		echo self::get_html_template( $settings['after'], false, [ $settings ] );
