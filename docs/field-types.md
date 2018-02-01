@@ -27,6 +27,8 @@ $the_page->add_field([
     'label'   => __( 'My Text field' ),
     'desc'    => __( 'some description.' ),
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     'props'   => [
         // input properies
@@ -57,6 +59,8 @@ $the_page->add_field([
     'label'   => __( 'My Select field' ),
     'desc'    => __( 'some description.' ),
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     'choices'   => [
         'opt-1'             => 'Option',
@@ -86,6 +90,8 @@ $the_page->add_field([
     'label'   => __( 'My Checkbox field' ),
     'desc'    => __( 'some description.' ),
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     //'before'  => 'html rendered before the checkbox',
     'after'   => 'html rendered after the checkbox',
@@ -114,6 +120,8 @@ $the_page->add_field([
     'desc'    => __( 'some description.' ),
     // separate the default values with a comma
     //'default' => 'banana, apple',
+    
+    //'wrapper_class' => '',
 
     'choices' => [
         'banana'    => 'Banana',
@@ -146,6 +154,8 @@ $the_page->add_field([
     'label'   => 'My Radio fields',
     'desc'    => 'some description.',
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     'choices'   => [
         'BR'    => 'Brazil',
@@ -173,6 +183,8 @@ $the_page->add_field([
     'type'    => 'hidden',
     'id'      => 'hidden_field',
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     //'before'  => 'html rendered before the <input>',
     //'after'   => 'html rendered after the <input>',
@@ -197,6 +209,8 @@ $the_page->add_field([
     'label'   => 'My Code field',
     'desc'    => 'some description.',
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     //'lang'    => 'javascript',
     //'theme'   => 'monokai',
@@ -227,6 +241,8 @@ $the_page->add_field([
     'label'   => 'My HTML field',
     'desc'    => 'some description.',
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     'content' => 'custom_render_html_field',
 
@@ -259,6 +275,8 @@ $the_page->add_field( [
     'label'   => 'My Color picker',
     'desc'    => 'some description.',
     'default' => '#fff',
+    
+    //'wrapper_class' => '',
 
     //'before'  => 'html rendered before the color picker',
     //'after'   => 'html rendered after the color picker',
@@ -282,6 +300,8 @@ $the_page->add_field( [
     'label'   => 'My Content picker',
     'desc'    => 'some description.',
     'default' => '',
+    
+    //'wrapper_class' => '',
 
     //'height'  => 200,
     //'wpautop' => true,
