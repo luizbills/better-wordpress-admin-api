@@ -184,23 +184,22 @@ class _WP_Admin_Page {
 			$class = 'nav-tab';
 
 			if ( ! $current_tab ) {
-				if ( 0 == $c ) {
+				if ( 0 === $c ) {
 					$class .= ' nav-tab-active';
 				}
 			} else {
-				if ( ! empty( $current_tab ) && $tab_id == $current_tab ) {
+				if ( ! empty( $current_tab ) && $tab_id === $current_tab ) {
 					$class .= ' nav-tab-active';
 				}
 			}
 
-			$tab_name = $tab_data['name'];
-			$tab_link = add_query_arg( array( 'tab' => $tab_id ) );
+			$tab_link = add_query_arg( [ 'tab' => $tab_id ] );
 
 			if ( isset( $_GET['settings-updated'] ) ) {
 				$tab_link = remove_query_arg( 'settings-updated', $tab_link );
 			}
-
-			echo '<a href="' . $tab_link . '" class="' . esc_attr( $class ) . '">' . esc_html( $tab_name ) . '</a>';
+			
+			echo '<a href="' . esc_url( $tab_link ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $tab_data['name'] ) . '</a>';
 
 			$c++;
 		}
