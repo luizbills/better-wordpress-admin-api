@@ -97,7 +97,7 @@ class _WP_Field_Renderer {
 		ob_start();
 		echo self::get_html_template( $settings['before'], false, [ $settings ] );
 		?>
-		<select multiple name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
+		<select name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
 
 			<?php
 			foreach( $choices as $choice_value => $choice_label ) {
