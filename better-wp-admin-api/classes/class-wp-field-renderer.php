@@ -35,7 +35,7 @@ class _WP_Field_Renderer {
 		$defaults = [
 			'props' => [],
 		];
-		$settings = array_merge( self::$field_defaults, $settings );
+		$settings = array_merge( self::$field_defaults, $defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_text_settings', $settings );
 
 		$settings['props'] = array_merge(
@@ -409,11 +409,12 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_content_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$field_defaults, $settings );
+		$defauls = [
+			'height'  => 200,
+			'wpautop' => true,
+		];
+		$settings = array_merge( self::$field_defaults, $defauls, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_content_settings', $settings );
-
-		$settings['height'] = empty( $settings['height'] ) ? '200' : $settings['height'];
-		$settings['wpautop'] = empty( $settings['wpautop'] ) ? true : $settings['wpautop'];
 
 		extract( $settings );
 		ob_start();
@@ -446,12 +447,11 @@ class _WP_Field_Renderer {
 	}
 
 	public static function render_html_field ( $settings, $echo = true ) {
-		$settings = array_merge( self::$field_defaults, $settings );
+		$defaults = [
+			'content' => '<pre><code>Missing "content" argument.</code></pre>',
+		];
+		$settings = array_merge( self::$field_defaults, $defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
-
-		if ( empty( $settings['content'] ) ) {
-			$settings['content'] = '<pre><code>Missing "content" argument.</code></pre>';
-		}
 
 		ob_start();
 
