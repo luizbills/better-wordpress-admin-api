@@ -27,6 +27,7 @@ window.jQuery( function ( $ ) {
             });
 
             editor.setValue( data_holder.value );
+            editor.gotoLine( 0 );
 
             $( document.body ).trigger( 'better-wp-admin-api-ace-editor-loaded', [ editor ] );
         } );
