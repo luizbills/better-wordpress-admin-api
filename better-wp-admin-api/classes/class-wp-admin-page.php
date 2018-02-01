@@ -8,24 +8,9 @@ class _WP_Admin_Page {
 
 	protected $fields = [];
 	protected $tabs = [];
-
 	protected $hook_suffix = null;
 	protected $setup_callbacks = [];
-
 	protected $default_tab = null;
-	protected $default_settings = [
-		// required
-		'id' => null, // Unique ID of the menu item
-		'menu_name' => null, // Name of the menu item
-
-		// optional
-		'options_prefix' => null,
-		'parent' => null, // id of parent, if blank, then this is a top level menu
-		'capability' => 'manage_options', // User role
-		'icon' => 'dashicons-admin-generic', // Menu icon for top level menus only http://melchoyce.github.io/dashicons/
-		'position' => null, // Menu position. Can be used for both top and sub level menus
-	];
-
 	protected $enqueue_color_picker = false;
 	protected $enqueue_ace = false;
 
@@ -38,7 +23,26 @@ class _WP_Admin_Page {
 	}
 
 	protected function validate_settings ( $settings ) {
-		$result = array_merge( $this->default_settings, $settings );
+		$defaults = [
+			// required
+			// Unique ID of the menu item
+			'id' => null,
+			// Name of the menu item
+			'menu_name' => null,
+
+			// optionals
+			// prefix to all fields of this page
+			'options_prefix' => '',
+			// id of parent, if blank, then this is a top level menu
+			'parent' => null,
+			// User role
+			'capability' => 'manage_options',
+			// Menu icon for top level menus only https://developer.wordpress.org/resource/dashicons/
+			'icon' => 'dashicons-admin-generic',
+			// Menu position. Can be used for both top and sub level menus
+			'position' => null,
+		];
+		$result = array_merge( $defaults, $settings );
 
 		if ( empty( $result['id'] ) || empty( $result['menu_name'] ) ) {
 			throw new Exception( 'An admin page requires an id and menu_name' );
@@ -148,9 +152,7 @@ class _WP_Admin_Page {
 						$current_section,
 						[
 							'field' => $field,
-							'class' => ( $field['type'] === 'hidden' )
-								? $field['wrapper_class'] . ' hidden_field'
-								: $field['wrapper_class'],
+							'class' => $field['wrapper_class'],
 						]
 					);
 				}
@@ -352,6 +354,7 @@ class _WP_Admin_Page {
 			}
 		}
 		unset( $this->setup_callbacks ); // free memory
+		do_action( 'better_wp_admin_api_setup_page-' . $this->hook_suffix, $this, $this->hook_suffix );
 	}
 
 	public function on_setup ( $callback ) {
@@ -367,8 +370,6 @@ class _WP_Admin_Page {
 			'wrapper_class'     => '',
 		];
 		$data = array_merge( $defaults, $data );
-
-		$data['unprefixed_id'] = $data['id'];
 
 		if ( empty ( $data['id'] ) ) {
 			$data['id'] = '__invalid__' . rand(0, 2147483647);
@@ -386,8 +387,13 @@ class _WP_Admin_Page {
 			// create the field tab, if necessary
 			$this->set_tab( [ 'id' => $data['tab'] ] );
 		}
+		
+		// add 'hidden_class' to fields of type hidden
+		$data['wrapper_class'] .= $data['type'] === 'hidden' ? ' hidden_field' : ''; 
 
+		// special keys
 		$data['__PAGE__'] = $this;
+		$data['unprefixed_id'] = $data['id'];
 
 		// store the field
 		$this->fields[ $data['id'] ] = $data;
