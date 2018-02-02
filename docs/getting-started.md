@@ -6,7 +6,7 @@
 
 ```php
 $page_details = [
-    // require arguments
+    // required arguments
     'id'        => 'my_page_id', // also it's the page slug
     'menu_name' => 'My Page',
     'prefix'    => 'my_prefix_', // prefix to all fields of this page
@@ -43,6 +43,8 @@ $field_details = [
     'id'        => 'your_field_id',
     'label'     => 'your_field_label',
     'type'      => 'text', // to create a text input
+    
+    //other args...
 ];
 
 // create your field
@@ -52,8 +54,8 @@ $your_page->add_field( $field_details );
 ```
 
 Notes:
- - There are several types of fields that you can create, check here in the [field type documentation](field-types.md).
- - You can write markdown in `desc` argument and *allowed HTML tags for post content*.
+ - There are several types of fields that you can create, check the [field type documentation](field-types.md).
+ - You can write [markdown](https://guides.github.com/features/mastering-markdown/) in `desc` argument and *allowed HTML tags for post content*.
 
 #### Getting field value
 
@@ -83,7 +85,7 @@ $the_page->set_tab([
 
 Notes:
 
-- You can write markdown in `desc` argument and *allowed HTML tags for post content*.
+- You can write [markdown](https://guides.github.com/features/mastering-markdown/) in `desc` argument and *allowed HTML tags for post content*.
 - If you do not create other tabs, no tabs will be shown on your page.
 
 #### The default tab
