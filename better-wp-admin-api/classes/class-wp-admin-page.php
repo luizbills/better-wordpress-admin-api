@@ -2,6 +2,13 @@
 
 if ( ! defined( 'WPINC' ) ) die;
 
+function get_file_url( $file = __FILE__ ) {
+    $file_path = str_replace( "\\", "/", str_replace( str_replace( "/", "\\", WP_CONTENT_DIR ), "", $file ) );
+    if ( $file_path )
+        return content_url( $file_path );
+    return false;
+}
+
 class _WP_Admin_Page {
 
 	public $settings = null;
@@ -13,6 +20,8 @@ class _WP_Admin_Page {
 	protected $default_tab = null;
 	protected $enqueue_color_picker = false;
 	protected $enqueue_ace = false;
+
+	protected static $pages_created = [];
 
 	public function __construct ( $settings = [] ) {
 		$this->settings = $this->validate_settings( $settings );
@@ -32,7 +41,7 @@ class _WP_Admin_Page {
 
 			// optionals
 			// prefix to all fields of this page
-			'options_prefix' => '',
+			'prefix' => '',
 			// id of parent, if blank, then this is a top level menu
 			'parent' => null,
 			// User role
@@ -52,6 +61,8 @@ class _WP_Admin_Page {
 	}
 
 	protected function init () {
+		self::$pages_created[ $this->settings['id'] ] = $this;
+
 		$this->set_tab( [
 			'id'    => 'default',
 			'name'  => ucfirst( $this->settings['menu_name'] ),
@@ -90,7 +101,7 @@ class _WP_Admin_Page {
 
 		add_action( 'admin_print_styles-' . $this->hook_suffix, array( $this, 'enqueue_assets' ) );
 
-		$this->do_setup();
+		$this->do_setup_page_hooks();
 	}
 
 	public function register_settings () {
@@ -140,7 +151,10 @@ class _WP_Admin_Page {
 					register_setting(
 						$page_slug,
 						$field['id'],
-						$sanitize_callback
+						[
+							'default' => $field['default'],
+							'sanitize_callback' => $sanitize_callback
+						]
 					);
 
 					// Add field to page
@@ -198,7 +212,7 @@ class _WP_Admin_Page {
 			if ( isset( $_GET['settings-updated'] ) ) {
 				$tab_link = remove_query_arg( 'settings-updated', $tab_link );
 			}
-			
+
 			echo '<a href="' . esc_url( $tab_link ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $tab_data['name'] ) . '</a>';
 
 			$c++;
@@ -319,7 +333,7 @@ class _WP_Admin_Page {
 		// required for 'code' field type
 		wp_enqueue_script(
 			'ace-editor',
-			plugins_url( 'assets/vendor/ace/src-min-noconflict/ace.js', BETTER_WP_ADMIN_API_FILE ),
+			_WP_Admin_API::get_asset_file_url( 'vendor/ace/src-min-noconflict/ace.js' ),
 			[],
 			'1.2.9',
 			true
@@ -329,7 +343,7 @@ class _WP_Admin_Page {
 		$deps = [ 'jquery' ];
 		wp_enqueue_script(
 			'better-wp-admin-api-fields',
-			plugins_url( 'assets/js/admin/fields.js', BETTER_WP_ADMIN_API_FILE ),
+			_WP_Admin_API::get_asset_file_url( 'js/admin/fields.js' ),
 			[
 				'jquery',
 				'ace-editor',
@@ -342,21 +356,21 @@ class _WP_Admin_Page {
 		// fields css
 		wp_enqueue_style(
 			'better-wp-admin-api-fields',
-			plugins_url( 'assets/css/admin/fields.css', BETTER_WP_ADMIN_API_FILE )
+			_WP_Admin_API::get_asset_file_url( 'css/admin/fields.css' )
 		);
 	}
 
-	protected function do_setup () {
+	protected function do_setup_page_hooks () {
 		foreach ( $this->setup_callbacks as $callback ) {
 			if ( is_callable( $callback ) ) {
-				call_user_func( $callback, $this, $this->hook_suffix );
+				call_user_func( $callback, $this->hook_suffix, $this );
 			}
 		}
 		unset( $this->setup_callbacks ); // free memory
-		do_action( 'better_wp_admin_api_setup_page-' . $this->hook_suffix, $this, $this->hook_suffix );
+		do_action( 'better_wp_admin_api_setup_page_hooks-' . $this->hook_suffix, $this->hook_suffix, $this );
 	}
 
-	public function on_setup ( $callback ) {
+	public function setup_page_hooks ( $callback ) {
 		$this->setup_callbacks[] = $callback;
 	}
 
@@ -386,9 +400,9 @@ class _WP_Admin_Page {
 			// create the field tab, if necessary
 			$this->set_tab( [ 'id' => $data['tab'] ] );
 		}
-		
+
 		// add 'hidden_class' to fields of type hidden
-		$data['wrapper_class'] .= $data['type'] === 'hidden' ? ' hidden_field' : ''; 
+		$data['wrapper_class'] .= $data['type'] === 'hidden' ? ' hidden_field' : '';
 
 		// special keys
 		$data['__PAGE__'] = $this;
@@ -452,6 +466,27 @@ class _WP_Admin_Page {
 	}
 
 	public function get_field_value ( $field_id ) {
+		if ( ! empty( $field_id ) ) {
+			$value = '';
+
+			$field_id = $this->fix_field_name( $field_id );
+			$field = $this->fields[ $field_id ];
+
+			if ( ! empty( $field ) ) {
+				$value = get_option( $field_id, false );
+				if ( $value === false ) {
+					$value = apply_filters( 'better_wp_admin_api_field_default_value', $field['default'], $field, $this );
+				} elseif ( empty( $value ) ) {
+					$value = '';
+				}
+			} else {
+				throw new Exception("Trying to get value of an undefined field with id: '$field_id'");
+			}
+
+			return $value;
+		}
+		return false;
+
 		$possible_ids = [ $field_id, $this->prefix_field_name( $field_id ) ];
 		$field = null;
 		$value = '';
@@ -471,17 +506,32 @@ class _WP_Admin_Page {
 			} elseif ( empty( $value ) ) {
 				$value = '';
 			}
-		} else {
-			throw new Exception("Trying to get value of an undefined field with id: '$field_id'");
 		}
 
 		return $value;
 	}
 
 	public function prefix_field_name ( $field_id ) {
-		return ( ! empty( $this->settings['options_prefix'] ) )
-			? $this->settings['options_prefix'] . $field_id
+		return ( ! empty( $this->settings['prefix'] ) )
+			? $this->settings['prefix'] . $field_id
 			: $field_id;
+	}
+
+	public function unprefix_field_name ( $field_id ) {
+		if ( ! empty( $this->settings['prefix'] ) ) {
+			$unprefixed = str_replace( $this->settings['prefix'], '', $field_id );
+
+			if ( $unprefixed === '' ) {
+				$unprefixed = $this->settings['prefix'] . $this->settings['prefix'];
+			}
+
+			return $unprefixed;
+		}
+		return $field_id;
+	}
+
+	protected function fix_field_name ( $field_id ) {
+		return $this->prefix_field_name( $this->unprefix_field_name( $field_id ) );
 	}
 
 	public function get_current_tab () {
@@ -501,5 +551,12 @@ class _WP_Admin_Page {
 
 	public function get_default_tab () {
 		return $this->default_tab;
+	}
+
+	public static function get_page_instance ( $page_id ) {
+		if ( ! empty( self::$pages_created[ $page_id ] ) ) {
+			return self::$pages_created[ $page_id ];
+		}
+		return false;
 	}
 }

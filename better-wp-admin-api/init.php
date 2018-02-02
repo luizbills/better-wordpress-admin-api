@@ -13,6 +13,7 @@ if ( ! defined( 'BETTER_WP_ADMIN_API_VERSION' ) ) {
         require_once( __DIR__ . '/vendor/Parsedown/Parsedown.php' );
     }
 
+    require_once( __DIR__ . '/classes/class-wp-admin-api.php' );
     require_once( __DIR__ . '/classes/class-wp-field-renderer.php' );
     require_once( __DIR__ . '/classes/class-wp-admin-page.php' );
     require_once( __DIR__ . '/functions.php' );

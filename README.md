@@ -22,13 +22,13 @@ include_once __DIR__ . '/path/to/your/better-wp-admin-api/init.php';
 
 // page details
 $page_args = [
-    'menu_name'         => 'My Page',
+    'menu_name'         => 'Your Page',
 
     // page slug
-    'id'                => 'my-page',
+    'id'                => 'your-page-id',
 
-    // prefix for all option names to fields of this page
-    'options_prefix'    => 'my_prefix_',
+    // automatically prefix all field ids
+    'prefix'    => 'your_prefix_',
 
     // use "parent" parameter to create as a sub-menu
     //'parent' => 'themes.php',
@@ -40,41 +40,45 @@ $page_args = [
 ];
 
 // create the page
-$my_page = wp_create_admin_page( $page_args );
+$your_page = wp_create_admin_page( $page_args );
 
-// hook a setup function
-$my_page->on_setup( 'my_prefix_setup_my_page' );
+// add fields
 
-// setup the page (add fields, add hooks, etc)
-function my_prefix_setup_my_page ( $the_page, $hook_suffix ) {
-    
-    // field details
-    $field_args = [
-        'type'      => 'text',
-        'id'        => 'text_field',
-        'label'     => 'Text field',
-        'desc'      => 'Field description. **You can use markdown here**.',
-        'props'     => [
-            // optional tag properties
-            'placeholder' => 'type something...'
-        ],
-        //'default' => 'hello world',
-    ];
-    
-    // creates a text field
-    $the_page->add_field( $field_args );
-}
+// field details
+$field_args = [
+    'type'      => 'text',
+    'id'        => 'your_text_field',
+    'label'     => 'Your Text field',
+    'desc'      => 'Your field description. **You can use markdown here**.',
+    'props'     => [
+        // optional tag properties
+        'placeholder' => 'type something...'
+    ],
+    //'default' => 'hello world',
+];
 
-// access the field value
-$text_field_value = $my_page->get_field_value( 'text_field' );
-
-// or with your prefix used above on $page_details
-$text_field_value = $my_page->get_field_value( 'my_prefix_text_field' );
+// creates a text field
+$your_page->add_field( $field_args );
 ```
 
 Generates:
 
 ![basic usage example page](docs/assets/page-usage-example.png)
+
+```php
+// get your page instance
+$your_page = wp_get_page_instance( 'your-page-id' );
+
+// get a field value
+$your_text_value = $my_page->get_field_value( 'your_text_field' );
+
+// or with your prefix used above on $page_details (but it is not necessary)
+$your_text_value = $my_page->get_field_value( 'your_prefix_your_text_field' );
+
+
+// or just put all together
+$your_text_value = wp_get_page_field_value( 'your-page-id', 'your_text_field' );
+```
 
 More at [examples](/examples) folder.
 
