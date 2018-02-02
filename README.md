@@ -97,6 +97,7 @@ More at [examples](/examples) folder.
 
 ## Documentation
 
+- [Getting started](docs/getting-started.md)
 - [Field Types](docs/field-types.md)
 
 ## Roadmap
