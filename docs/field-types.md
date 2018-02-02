@@ -212,7 +212,7 @@ $the_page->add_field([
 
     //'wrapper_class' => '',
 
-    //'lang'              => 'jaavscript',
+    //'lang'              => 'javascript',
     //'theme'             => 'monokai',
     //'height'            => 200,
     //'font-size'         => 12,
