@@ -13,7 +13,7 @@ $my_page = wp_create_admin_page( [
 ] );
 
 // hook your setup function
-$my_page->add_subtitle( 'Common fields', '' );
+$my_page->add_subtitle( [ 'name' => 'Common fields' ] );
 
 $my_page->add_field([
     'type'    => 'text',
@@ -80,7 +80,7 @@ $my_page->add_field([
     'default' => '',
 ]);
 
-$my_page->add_subtitle( 'Special fields', '' );
+$my_page->add_subtitle( [ 'name' => 'Special fields' ] );
 
 $my_page->add_field([
     'type'    => 'html',

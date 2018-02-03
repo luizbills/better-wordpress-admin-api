@@ -2,13 +2,6 @@
 
 if ( ! defined( 'WPINC' ) ) die;
 
-function get_file_url( $file = __FILE__ ) {
-    $file_path = str_replace( "\\", "/", str_replace( str_replace( "/", "\\", WP_CONTENT_DIR ), "", $file ) );
-    if ( $file_path )
-        return content_url( $file_path );
-    return false;
-}
-
 class _WP_Admin_Page {
 
 	public $settings = null;
@@ -25,9 +18,7 @@ class _WP_Admin_Page {
 
 	public function __construct ( $settings = [] ) {
 		$this->settings = $this->validate_settings( $settings );
-
 		$this->init();
-
 		$this->hooks();
 	}
 
@@ -152,7 +143,6 @@ class _WP_Admin_Page {
 						$page_slug,
 						$field['id'],
 						[
-							'default' => $field['default'],
 							'sanitize_callback' => $sanitize_callback
 						]
 					);
@@ -385,7 +375,7 @@ class _WP_Admin_Page {
 		$data = array_merge( $defaults, $data );
 
 		if ( empty ( $data['id'] ) ) {
-			$data['id'] = '__invalid__' . rand(0, 2147483647);
+			$data['id'] = '__invalid__' . rand( 0, 2147483647 );
 			$data['type'] = '__invalid__';
 			$data['error_message'] = 'All fields requires a "id" parameter.';
 		} else {
@@ -418,19 +408,23 @@ class _WP_Admin_Page {
 		return $data['id'];
 	}
 
-	public function add_subtitle ( $name, $desc = '', $tab = null ) {
-		if ( empty( $name ) ) {
+	public function add_subtitle ( $data ) {
+		$defaults = [
+			'tab'  => $this->default_tab,
+			'desc' => '',
+		];
+		$data = array_merge( $defaults, $data );
+
+		if ( empty( $data['name'] ) ) {
 			throw new Exception( 'All subtitles requires a "name" parameter.' );
 		}
 
-		$tab = empty( $tab ) ? $this->default_tab : $tab;
-
 		$field = $this->add_field( [
 			'type'   => 'subtitle',
-			'tab'    => $tab,
-			'id'     => $name,
-			'label'  => $name,
-			'desc'   => $desc,
+			'tab'    => $data['tab'],
+			'id'     => 'subtitle_' . rand( 0, 2147483647 ) . $data['name'],
+			'label'  => $data['name'],
+			'desc'   => $data['desc'],
 		] );
 	}
 
@@ -553,7 +547,7 @@ class _WP_Admin_Page {
 		return $this->default_tab;
 	}
 
-	public static function get_page_instance ( $page_id ) {
+	public static function get_instance_by_id ( $page_id ) {
 		if ( ! empty( self::$pages_created[ $page_id ] ) ) {
 			return self::$pages_created[ $page_id ];
 		}

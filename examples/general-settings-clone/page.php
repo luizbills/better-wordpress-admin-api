@@ -4,8 +4,6 @@
     /wp-admin/options-general.php
 */
 
-global $wp_roles;
-
 include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 
 $page = wp_create_admin_page( [
@@ -77,7 +75,7 @@ $page->add_field([
     'id'        => 'default_role',
     'label'     => 'New User Default Role',
     'type'      => 'select',
-    'choices'   => array_reverse( $wp_roles->get_names() ),
+    'choices'   => array_reverse( wp_roles()->get_names() ),
 ]);
 
 $page->add_field([
