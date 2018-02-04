@@ -11,8 +11,6 @@ class _WP_Admin_Page {
 	protected $hook_suffix = null;
 	protected $setup_callbacks = [];
 	protected $default_tab = null;
-	protected $enqueue_color_picker = false;
-	protected $enqueue_ace = false;
 
 	protected static $pages_created = [];
 
