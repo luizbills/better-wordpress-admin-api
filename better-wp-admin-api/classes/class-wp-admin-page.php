@@ -433,7 +433,7 @@ class _WP_Admin_Page {
 			'id'            => '',
 			'name'          => '',
 			'desc'          => '',
-			'submit_label'  => __( 'Save Settings' , 'wordpress' ),
+			'submit_label'  => __( 'Save Changes' ),
 			'fields'        => [],
 		];
 		$data = array_merge( $defaults, $data );

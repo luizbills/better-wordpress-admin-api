@@ -6,7 +6,7 @@
 include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 
 // creates a page
-$my_page = wp_create_admin_page( [
+$page_with_tabs = wp_create_admin_page( [
     'menu_name'   => 'Page with Tabs',
     'id'          => 'page-with-tabs',
     'prefix'      => 'with_tabs_',
@@ -14,26 +14,26 @@ $my_page = wp_create_admin_page( [
 
 
 // changes default tab title
-$my_page->set_tab([
+$page_with_tabs->set_tab([
     'id'   => 'default',
     'name' => 'General',
     'desc' => 'Tabs can have description and with **markdown**! Also <u>some html tags are allowed too.</u>',
 ]);
 
 // creates a second tab
-$my_page->set_tab([
+$page_with_tabs->set_tab([
     'id'   => 'extra',
     'name' => 'Extra'
 ]);
 
 // creates a third tab
-$my_page->set_tab([
+$page_with_tabs->set_tab([
     'id'   => 'about',
     'name' => 'About'
 ]);
 
 // creates a text field in default tab
-$my_page->add_field( [
+$page_with_tabs->add_field( [
     // fields without "tag" parameter will appears in default tab
     'type'      => 'text',
     'id'        => 'text_field',
@@ -41,7 +41,7 @@ $my_page->add_field( [
 ] );
 
 // creates a select field in "extra" tab
-$my_page->add_field( [
+$page_with_tabs->add_field( [
     'tab'       => 'extra',
 
     'type'      => 'code',
@@ -52,7 +52,7 @@ $my_page->add_field( [
     'default'   => 'console.log(\'hello world\');',
 ] );
 
-$my_page->add_field( [
+$page_with_tabs->add_field( [
     'tab'       => 'extra',
 
     'type'      => 'content',
@@ -62,7 +62,7 @@ $my_page->add_field( [
     'default'   => 'Hello world!',
 ] );
 
-$my_page->add_field( [
+$page_with_tabs->add_field( [
     'tab'       => 'extra',
 
     'type'      => 'color',
@@ -73,7 +73,7 @@ $my_page->add_field( [
 ] );
 
 // creates a html field in "about" tab
-$my_page->add_field( [
+$page_with_tabs->add_field( [
     'tab'       => 'about',
 
     'type'      => 'html',

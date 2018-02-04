@@ -6,16 +6,16 @@
 include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 
 // creates a page
-$my_page = wp_create_admin_page( [
+$all_fields_page = wp_create_admin_page( [
     'menu_name'  => 'All Fields',
     'id'         => 'all-fields',
     'prefix'     => 'all_fields_',
 ] );
 
 // hook your setup function
-$my_page->add_subtitle( [ 'name' => 'Common fields' ] );
+$all_fields_page->add_subtitle( [ 'name' => 'Common fields' ] );
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'text',
     'id'      => 'text_field',
     'label'   => __( 'My Text field' ),
@@ -23,7 +23,7 @@ $my_page->add_field([
     'default' => '',
 ]);
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'select',
     'id'      => 'select_field',
     'label'   => __( 'My Select field' ),
@@ -38,7 +38,7 @@ $my_page->add_field([
     ],
 ]);
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'checkbox',
     'id'      => 'checkbox_field',
     'label'   => __( 'My Checkbox field' ),
@@ -47,7 +47,7 @@ $my_page->add_field([
     'after'   => 'html rendered after the checkbox',
 ]);
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'checkbox_multi',
     'id'      => 'checkbox_multi_field',
     'label'   => __( 'My Multiple Checkboxes field' ),
@@ -60,7 +60,7 @@ $my_page->add_field([
     ],
 ]);
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'radio',
     'id'      => 'radio_field',
     'label'   => 'My Radio fields',
@@ -74,15 +74,15 @@ $my_page->add_field([
     ],
 ]);
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'hidden',
     'id'      => 'hidden_field',
     'default' => '',
 ]);
 
-$my_page->add_subtitle( [ 'name' => 'Special fields' ] );
+$all_fields_page->add_subtitle( [ 'name' => 'Special fields' ] );
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'html',
     'id'      => 'html_field',
     'label'   => 'My HTML field',
@@ -91,7 +91,7 @@ $my_page->add_field([
     'content' => 'all_fields_render_html_field',
 ]);
 
-$my_page->add_field([
+$all_fields_page->add_field([
     'type'    => 'code',
     'id'      => 'code_field',
     'label'   => 'My Code field',
@@ -99,7 +99,7 @@ $my_page->add_field([
     'default' => '',
 ]);
 
-$my_page->add_field( [
+$all_fields_page->add_field( [
     'type'    => 'color',
     'id'      => 'color_field',
     'label'   => 'My Color picker',
@@ -107,7 +107,7 @@ $my_page->add_field( [
     'default' => '#fff',
 ] );
 
-$my_page->add_field( [
+$all_fields_page->add_field( [
     'type'    => 'content',
     'id'      => 'content_field',
     'label'   => 'My Content picker',
@@ -115,8 +115,8 @@ $my_page->add_field( [
     'default' => '',
 ] );
 
-function all_fields_render_html_field ( $field, $my_page ) {
-    $value = $my_page->get_field_value( $field['id'] );
+function all_fields_render_html_field ( $field, $all_fields_page ) {
+    $value = $all_fields_page->get_field_value( $field['id'] );
     $html = '<div class="card">Made with HTML field<br>';
     $html .= '<input type="text" name="' . $field['id'] . '" value="' . esc_attr( $value ) . '">';
     $html .= '</div>';

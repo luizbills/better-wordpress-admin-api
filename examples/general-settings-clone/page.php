@@ -6,32 +6,32 @@
 
 include_once __DIR__ . '/../../better-wp-admin-api/init.php';
 
-$page = wp_create_admin_page( [
+$general_page = wp_create_admin_page( [
     'id'          => 'general-settings-clone',
     'menu_name'   => 'General Clone',
     //'parent'    => 'options-general.php',
     'prefix'      => ''
 ] );
 
-$page->set_tab([
+$general_page->set_tab([
     'id' => 'default',
     'name' => 'General Settings',
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'blogname',
     'label'     => 'Site Title',
     'type'      => 'text',
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'blogdescription',
     'label'     => 'Tagline',
     'type'      => 'text',
     'desc'      => 'In a few words, explain what this site is about.'
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'siteurl',
     'label'     => 'WordPress Address (URL)',
     'type'      => 'text',
@@ -41,7 +41,7 @@ $page->add_field([
     ]
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'home',
     'label'     => 'Site Address (URL)',
     'type'      => 'text',
@@ -52,7 +52,7 @@ $page->add_field([
     ]
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'admin_email',
     'label'     => 'Email Address',
     'type'      => 'text',
@@ -64,21 +64,21 @@ $page->add_field([
     ]
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'users_can_register',
     'label'     => 'Membership',
     'type'      => 'checkbox',
     'after'     => ' Anyone can register'
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'default_role',
     'label'     => 'New User Default Role',
     'type'      => 'select',
     'choices'   => array_reverse( wp_roles()->get_names() ),
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'WPLANG',
     'label'     => 'Site Language',
     'type'      => 'select',
@@ -95,7 +95,7 @@ $page->add_field([
     'default' => 'en'
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'timezone_string',
     'label'     => 'Timezone',
     'type'      => 'select',
@@ -112,7 +112,7 @@ $page->add_field([
     'after'     => '<p class="description" id="timezone-description">Choose either a city in the same timezone as you or a UTC timezone offset.</p><p class="timezone-info"><span id="utc-time">Universal time (<abbr>UTC</abbr>) is <code>2018-01-29 12:39:18</code>.</span></p>',
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'date_format',
     'label'     => 'Date Format',
     'type'      => 'radio',
@@ -122,7 +122,7 @@ $page->add_field([
     'after' =>  '<p><b>Preview</b>: January 29, 2018</p>'
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'time_format',
     'label'     => 'Time Format',
     'type'      => 'radio',
@@ -132,7 +132,7 @@ $page->add_field([
     'after' =>  '<p><b>Preview</b>: 1:51 pm</p><br><a href="#">Documentation on date and time formatting</a>'
 ]);
 
-$page->add_field([
+$general_page->add_field([
     'id'        => 'start_of_week',
     'label'     => 'Week Starts On',
     'type'      => 'select',
@@ -191,7 +191,7 @@ function __start_of_week_select_choices () {
     return $week_days;
 }
 
-$page->setup_page_hooks( function ( $hook_suffix, $the_page ) {
+$general_page->setup_page_hooks( function ( $hook_suffix, $the_page ) {
 
     // required css just for this page
     add_action( "admin_head-$hook_suffix", function () {
