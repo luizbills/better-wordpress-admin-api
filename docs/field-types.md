@@ -12,6 +12,7 @@
 - [HTML](#html)
 - [Color](#color)
 - [Content](#content)
+- [Image](#content)
 
 ### Text
 
@@ -328,10 +329,9 @@ Image uploader.
 $the_page->add_field( [
     //'tab' => 'default',
 
-    'type'    => 'content',
-    'id'      => 'content_field',
+    'type'    => 'image',
+    'id'      => 'image_field',
     'desc'    => 'some description.',
-    'default' => '',
 
     //'wrapper_class' => '',
 
