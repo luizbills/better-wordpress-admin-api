@@ -64,6 +64,7 @@ window.jQuery( function ( $ ) {
 
         if ( '' === $self.val() ) {
             image_preview.hide();
+            btn_delete.hide();
         }
 
         // If the media frame already exists, reopen it.
@@ -87,6 +88,7 @@ window.jQuery( function ( $ ) {
                 var attachment = file_frame.state().get('selection').first().toJSON();
                 $self.val( attachment.id );
                 image_preview.show();
+                btn_delete.show();
                 image_preview.attr( 'src', attachment.sizes.thumbnail.url );
                 file_frame = false;
             });
@@ -95,9 +97,10 @@ window.jQuery( function ( $ ) {
             file_frame.open();
         });
 
-        $('.image_delete_button').on('click', function() {
+        btn_delete.on('click', function() {
             $self.val( '' );
             image_preview.attr('src', '').hide();
+            btn_delete.hide();
             return false;
         });
 
