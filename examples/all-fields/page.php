@@ -3,7 +3,7 @@
     All Fields
 */
 
-include_once __DIR__ . '/../../better-wp-admin-api/init.php';
+include_once __DIR__ . '/../../framework/init.php';
 
 // creates a page
 $all_fields_page = wp_create_admin_page( [
@@ -111,6 +111,14 @@ $all_fields_page->add_field( [
     'type'    => 'content',
     'id'      => 'content_field',
     'label'   => 'My Content picker',
+    'desc'    => 'some description.',
+    'default' => '',
+] );
+
+$all_fields_page->add_field( [
+    'type'    => 'image',
+    'id'      => 'image_field',
+    'label'   => 'My Image field',
     'desc'    => 'some description.',
     'default' => '',
 ] );

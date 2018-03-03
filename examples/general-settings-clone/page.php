@@ -4,7 +4,7 @@
     /wp-admin/options-general.php
 */
 
-include_once __DIR__ . '/../../better-wp-admin-api/init.php';
+include_once __DIR__ . '/../../framework/init.php';
 
 $general_page = wp_create_admin_page( [
     'id'          => 'general-settings-clone',

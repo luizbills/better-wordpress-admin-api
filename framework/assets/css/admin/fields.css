@@ -1,0 +1,37 @@
+.wrap h2.nav-tab-wrapper {
+    margin-bottom: 10px;
+}
+
+.wrap .form-table {
+    border-bottom: 2px solid rgba(0,0,0,.1);
+}
+
+.wrap .form-table:last-of-type  {
+    border-bottom: 0;
+}
+
+.hidden_field {
+    display: none!important;
+}
+
+.section-header .description,
+.tab-header .description {
+    max-width: 48rem;
+    font-style: normal;
+}
+
+.color-picker-field {
+    position: relative;
+}
+
+.colorpicker {
+    position: absolute;
+    background: #FFF;
+    z-index: 99;
+    border-radius: 100%;
+}
+
+.image_preview {
+    display: block;
+    margin-bottom: 1rem;
+}

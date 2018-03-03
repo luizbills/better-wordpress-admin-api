@@ -273,7 +273,7 @@ Notes:
 
 ```php
 $the_page->add_field( [
-    //'tab'' => 'default',
+    //'tab' => 'default',
 
     'type'    => 'color',
     'id'      => 'color_field',
@@ -298,7 +298,7 @@ TinyMCE content editor.
 
 ```php
 $the_page->add_field( [
-    //'tab'' => 'default',
+    //'tab' => 'default',
 
     'type'    => 'content',
     'id'      => 'content_field',
@@ -310,6 +310,35 @@ $the_page->add_field( [
 
     //'height'  => 200,
     //'wpautop' => true,
+
+    //'before'  => 'html rendered before the editor',
+    //'after'   => 'html rendered after the editor',
+
+    //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
+] );
+```
+
+### Image
+
+Image uploader.
+
+![Image field](assets/field-image.png)
+
+```php
+$the_page->add_field( [
+    //'tab' => 'default',
+
+    'type'    => 'content',
+    'id'      => 'content_field',
+    'desc'    => 'some description.',
+    'default' => '',
+
+    //'wrapper_class' => '',
+
+    //'field_button_upload'  => 'Upload new image',
+    //'field_button_remove' => 'Remove image',
+    //'uploader_title'  => 'Upload a image',
+    //'uploader_button' => 'Use this image',
 
     //'before'  => 'html rendered before the editor',
     //'after'   => 'html rendered after the editor',

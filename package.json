@@ -1,0 +1,24 @@
+{
+  "name": "better-wordpress-admin-api",
+  "version": "0.0.0",
+  "description": "A better way to build admin pages and options for you plugins/themes.",
+  "scripts": {
+    "minify-css": "csso ./framework/assets/css/admin/fields.css ./framework/assets/css/admin/fields.min.css",
+    "minify-js": "uglifyjs -cm -o ./framework/assets/js/admin/fields.min.js -- ./framework/assets/js/admin/fields.js",
+    "minify": "npm run minify-css && npm run minify-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luizbills/better-wordpress-admin-api.git"
+  },
+  "author": "Luiz Bills",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/luizbills/better-wordpress-admin-api/issues"
+  },
+  "homepage": "https://github.com/luizbills/better-wordpress-admin-api#readme",
+  "devDependencies": {
+    "csso-cli": "^1.1.0",
+    "uglify-js": "^3.3.12"
+  }
+}

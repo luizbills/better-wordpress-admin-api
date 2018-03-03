@@ -3,7 +3,7 @@
     Simple Page
 */
 
-include_once __DIR__ . '/../../better-wp-admin-api/init.php';
+include_once __DIR__ . '/../../framework/init.php';
 
 // creates a page
 $simple_page = wp_create_admin_page( [
