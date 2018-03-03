@@ -12,7 +12,7 @@ git clone https://github.com/luizbills/better-wordpress-admin-api/
 
 Include the `framework/init.php` file
 ```php
-include_once 'path/toframework/init.php';
+include_once 'path/to/framework/init.php';
 ```
 
 ## Usage
@@ -106,10 +106,16 @@ More at [examples](/examples) folder.
 - [x] ~~TinyMCE editor~~
 - [x] ~~Fields Documentation~~
 - [x] ~~Multiple checkboxes~~
-- [ ] Hooks Documentation
 - [x] ~~Upload field~~
+- [ ] Hooks Documentation
 - [ ] Metaboxes
 - [ ] Customizer fields (maybe)
+
+## Contributing
+
+- Found a bug? Report it on [GitHub Issues](https://github.com/luizbills/better-wordpress-admin-api/issues) and include a code sample. Please state which version of WordPress your are using.
+
+- Before submitting a Pull Request run your `npm run minify` if you are modifying some JavaScript or CSS file.
 
 ## LICENSE
 
