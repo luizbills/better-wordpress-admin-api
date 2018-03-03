@@ -115,7 +115,15 @@ More at [examples](/examples) folder.
 
 - Found a bug? Report it on [GitHub Issues](https://github.com/luizbills/better-wordpress-admin-api/issues) and include a code sample. Please state which version of WordPress your are using.
 
-- Before submitting a Pull Request run your `npm run minify` if you are modifying some JavaScript or CSS file.
+- Before submitting a Pull Request, if you are modifying some JavaScript or CSS file run: `npm run minify` (requires NodeJS)
+
+More details:
+1. install NodeJS
+1. open your terminal in the root of this repository
+1. run `npm install`
+1. then run `npm run minify` to update the minified assets.
+
+> Pro tip: add `define( 'WP_DEBUG_SCRIPT', true );` to your `wp-config.php` when you're coding some PR.
 
 ## LICENSE
 
