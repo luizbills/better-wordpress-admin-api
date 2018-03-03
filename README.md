@@ -107,7 +107,7 @@ More at [examples](/examples) folder.
 - [x] ~~Fields Documentation~~
 - [x] ~~Multiple checkboxes~~
 - [ ] Hooks Documentation
-- [x] Upload field
+- [x] ~~Upload field~~
 - [ ] Metaboxes
 - [ ] Customizer fields (maybe)
 
