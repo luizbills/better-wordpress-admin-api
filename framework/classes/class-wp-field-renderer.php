@@ -164,7 +164,7 @@ class _WP_Field_Renderer {
 			<legend class="screen-reader-text">
 				<span><?php echo esc_html( $label ); ?></span>
 			</legend>
-			<label for="<?php echo esc_attr( $id ); ?>">
+			<label>
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 				<input
 					type="checkbox"
@@ -211,7 +211,7 @@ class _WP_Field_Renderer {
 			<label for="<?php echo esc_attr( $id ); ?>">
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 
-				<div class="checkboxes">
+				<div class="choices">
 
 					<?php foreach ( $choices as $choice_value => $choice_label ) : ?>
 
@@ -256,7 +256,7 @@ class _WP_Field_Renderer {
 			<legend class="screen-reader-text">
 				<span><?php echo esc_html( $label ); ?></span>
 			</legend>
-			<p>
+			<p class="choices">
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 
 				<?php foreach( $choices as $choice_key => $choice_label ) : ?>

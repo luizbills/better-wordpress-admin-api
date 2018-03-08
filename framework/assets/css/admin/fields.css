@@ -35,3 +35,20 @@
   display: block;
   margin-bottom: 1rem;
 }
+
+input {
+  max-width: 100%;
+}
+
+.metabox-field label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.metabox-field .choices {
+  margin: 0;
+}
+
+.metabox-field .choices > br {
+  display: none;
+}
