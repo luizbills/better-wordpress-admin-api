@@ -34,21 +34,34 @@
 .image_preview {
   display: block;
   margin-bottom: 1rem;
+  max-height: 15rem;
 }
 
 input {
   max-width: 100%;
 }
 
-.metabox-field label {
-  display: block;
-  margin-bottom: 6px;
+.metabox-field > th {
+  font-weight: normal;
+  color: #333;
 }
 
-.metabox-field .choices {
+.better-metabox .inside {
+  margin: 0!important;
+  padding: 0;
+  display: flex;
+}
+
+.better-metabox .metabox-tabs {
+  width: 30%;
+  border-right: 1px solid #ddd;
+}
+
+.better-metabox .metabox-content {
+  width: 100%;
+  padding: 1rem;
+}
+
+.better-metabox .metabox-content .form-table {
   margin: 0;
-}
-
-.metabox-field .choices > br {
-  display: none;
 }

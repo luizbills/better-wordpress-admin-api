@@ -25,12 +25,10 @@ class _WP_Admin_Metabox {
 			'title' => null,
 
 			// optionals
-			// description
-			'desc' => '',
 			// prefix to all fields of this page
 			'prefix' => '',
 			// User role
-			'capability' => 'manage_options',
+			'capability' => 'manage_options', // TODO
 			// allowed post types
 			'post_type' => [ 'post' ],
 			// other arguments
@@ -69,21 +67,41 @@ class _WP_Admin_Metabox {
 				$this->settings['context'],
 				$this->settings['position']
 			);
+
+			add_filter( 'postbox_classes_' . $post_type . '_' . $this->settings['id'], [ $this, 'add_metabox_classes' ] );
 		}
 	}
 
+	public function add_metabox_classes ( $classes ) {
+		$classes[] = 'better-metabox';
+		return $classes;
+	}
+
 	public function render_meta_box ( $post ) {
-		foreach( $this->fields as $id => $field ) {
-			$wrapper_class = $field['wrapper_class'] . ' metabox-field';
+		?>
+		<!--
+		<div class="metabox-tabs">
+		</div>
+		-->
+		<div class="metabox-content">
+			<table class="form-table">
+			<?php foreach( $this->fields as $id => $field ) :
+				$wrapper_class = $field['wrapper_class'] . ' metabox-field';
 			?>
-			<div id="<?php echo esc_attr( $id ); ?>" class="<?php echo esc_attr( $wrapper_class ); ?>">
-				<label for="<?php echo esc_attr ($id ); ?>">
-					<strong><?php echo esc_html( $field['label'] ); ?></strong>
-				</label>
-				<?php $this->render_field( $field ); ?>
-			</div>
-			<?php
-		}
+				<tr class="<?php echo esc_attr( $wrapper_class ); ?>">
+					<th	scope="row">
+						<label for="<?php echo esc_attr ($id ); ?>">
+							<?php echo esc_html( $field['label'] ); ?>
+						</label>
+					</th>
+					<td>
+						<?php $this->render_field( $field ); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			</table>
+		</div>
+		<?php
 	}
 
 	protected function render_field ( $field_settings ) {
@@ -113,23 +131,25 @@ class _WP_Admin_Metabox {
 	public function save_meta_box ( $post_id ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 
-		foreach( $this->fields as $id => $field ) {
-			if ( isset( $_POST[ $id ] ) ) {
-				$value = $_POST[ $id ];
+		foreach( $this->fields as $key => $field ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				$value = $_POST[ $key ];
 				$sanitize_callback = isset( $field['sanitize_callback'] ) ? $field['sanitize_callback'] : false;
 				if ( is_callable( $sanitize_callback ) ) {
-					$value = call_user_func( $sanitize_callback, $value, $id, this );
+					$value = call_user_func( $sanitize_callback, $value, $key, this );
 				}
-				update_post_meta( $post_id, $id, $_POST[ $id ] );
+				update_post_meta( $post_id, $key, $value );
+			} else {
+				delete_post_meta( $post_id, $key );
 			}
 		}
 	}
 
 	public function enqueue_assets () {
 		$script_suffix = defined( 'WP_DEBUG_SCRIPT' ) && WP_DEBUG_SCRIPT ? '' : '.min';
-		$has_code_field = defined( 'WP_ADMIN_PAGE_HAS_CODE_FIELD' );
-		$has_color_field = defined( 'WP_ADMIN_PAGE_HAS_COLOR_FIELD' );
-		$has_image_field = defined( 'WP_ADMIN_PAGE_HAS_IMAGE_FIELD' );
+		$has_code_field = defined( 'WP_METABOX_HAS_CODE_FIELD' );
+		$has_color_field = defined( 'WP_METABOX_HAS_COLOR_FIELD' );
+		$has_image_field = defined( 'WP_METABOX_HAS_IMAGE_FIELD' );
 
 		if ( $has_color_field ) {
 			// required for 'color' field type
@@ -189,8 +209,8 @@ class _WP_Admin_Metabox {
 		} else {
 			$data['id'] = $this->prefix_field_name( $data['id'] );
 
-			if ( ! defined( 'WP_ADMIN_PAGE_HAS_' . strtoupper( $data['type'] ) . '_FIELD' ) ) {
-				define( 'WP_ADMIN_PAGE_HAS_' . strtoupper( $data['type'] ) . '_FIELD', true );
+			if ( ! defined( 'WP_METABOX_HAS_' . strtoupper( $data['type'] ) . '_FIELD' ) ) {
+				define( 'WP_METABOX_HAS_' . strtoupper( $data['type'] ) . '_FIELD', true );
 			}
 		}
 
@@ -202,7 +222,7 @@ class _WP_Admin_Metabox {
 		$data['wrapper_class'] .= $data['type'] === 'hidden' ? ' hidden_field' : '';
 
 		// special keys
-		$data['__META_BOX__'] = $this;
+		$data['__PARENT__'] = $this;
 		$data['unprefixed_id'] = $data['id'];
 
 		// store the field

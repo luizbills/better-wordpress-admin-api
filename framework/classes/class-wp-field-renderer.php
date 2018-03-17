@@ -419,7 +419,7 @@ class _WP_Field_Renderer {
 		$settings = array_merge( self::$field_defaults, $defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
 		ob_start();
-		echo self::get_html_template( $settings['content'], false, [ $settings, $settings['__PAGE__'] ] );
+		echo self::get_html_template( $settings['content'], false, [ $settings, $settings['__PARENT__'] ] );
 		if ( ! empty( $settings['desc'] ) ) :
 		?>
 		<p class="description"><?php self::render_description( $settings['desc'] ); ?></p>

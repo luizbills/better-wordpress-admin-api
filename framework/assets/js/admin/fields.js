@@ -89,7 +89,8 @@ window.jQuery( function ( $ ) {
         $self.val( attachment.id );
         image_preview.show();
         btn_delete.show();
-        image_preview.attr( 'src', attachment.sizes.thumbnail.url );
+        console.log(attachment)
+        image_preview.attr( 'src', attachment.sizes.full.url );
         file_frame = false;
       });
 
