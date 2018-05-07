@@ -492,30 +492,7 @@ class _WP_Admin_Page {
 
 			return $value;
 		}
-		return false;
-
-		$possible_ids = [ $field_id, $this->prefix_field_name( $field_id ) ];
-		$field = null;
-		$value = '';
-
-		foreach ( $possible_ids as $_id ) {
-			if ( isset( $this->fields[ $_id ] ) ) {
-				$field = $this->fields[ $_id ];
-				$field_id = $_id;
-				break;
-			}
-		}
-
-		if ( ! empty( $field ) ) {
-			$value = get_option( $field_id, false );
-			if ( $value === false ) {
-				$value = apply_filters( 'better_wp_admin_api_field_default_value', $field['default'], $field, $this );
-			} elseif ( empty( $value ) ) {
-				$value = '';
-			}
-		}
-
-		return $value;
+		throw new Exception('$field_id is a required argument');
 	}
 
 	public function prefix_field_name ( $field_id ) {
