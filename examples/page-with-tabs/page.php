@@ -34,7 +34,7 @@ $page_with_tabs->set_tab([
 
 // creates a text field in default tab
 $page_with_tabs->add_field( [
-    // fields without "tag" parameter will appears in default tab
+    // fields without "tab" parameter will appears in default tab
     'type'      => 'text',
     'id'        => 'text_field',
     'label'     => 'Text field',
