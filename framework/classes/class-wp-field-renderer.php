@@ -343,7 +343,7 @@ class _WP_Field_Renderer {
 		<noscript>
 			<div class="notice notice-error">
 				<p><strong>
-					<?php echo esc_html( 'Code editor field needs javascript to work.', BETTER_WP_ADMIN_API_DOMAIN ); ?>
+					<?php echo '<p><strong>Code editor field needs JavaScript enabled to work.</strong><p>'; ?>
 				</strong></p>
 			</div>
 		</noscript>
