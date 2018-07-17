@@ -4,7 +4,7 @@ if ( ! defined( 'WPINC' ) ) die;
 
 if ( ! defined( 'BETTER_WP_ADMIN_API_VERSION' ) ) {
 
-	define( 'BETTER_WP_ADMIN_API_VERSION', '0.3.0' );
+	define( 'BETTER_WP_ADMIN_API_VERSION', '0.4.0' );
 	define( 'BETTER_WP_ADMIN_API_DOMAIN', 'better-wp-admin-api' );
 	define( 'BETTER_WP_ADMIN_API_DIR', __DIR__ );
 	define( 'BETTER_WP_ADMIN_API_FILE', __FILE__ );
