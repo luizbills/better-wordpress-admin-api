@@ -67,13 +67,13 @@ window.jQuery( function ( $ ) {
       btn_delete.hide();
     }
 
-    // If the media frame already exists, reopen it.
-    if ( file_frame ) {
-      file_frame.open();
-      return;
-    }
-
     btn_upload.on('click', function () {
+      // If the media frame already exists, reopen it.
+      if ( file_frame ) {
+        file_frame.open();
+        return;
+      }
+
       // Create the media frame.
       file_frame = wp.media.frames.file_frame = wp.media({
         title: $( this ).data( 'uploader_title' ),
