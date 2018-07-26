@@ -414,7 +414,7 @@ class _WP_Admin_Page {
 			'src' => $src,
 			'deps' => $deps,
 			'version' => $version,
-			'media' => media,
+			'media' => $media,
 		];
 	}
 
