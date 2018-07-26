@@ -11,6 +11,8 @@ class _WP_Admin_Page {
 	protected $hook_suffix = null;
 	protected $setup_callbacks = [];
 	protected $default_tab = null;
+	protected $page_scripts = [];
+	protected $page_styles = [];
 
 	protected static $pages_created = [];
 
@@ -350,12 +352,36 @@ class _WP_Admin_Page {
 			BETTER_WP_ADMIN_API_VERSION,
 			true
 		);
+		
+		if ( count( $this->page_scripts ) > 0 ) {
+			foreach( $this->page_scripts as $data ) {
+				wp_enqueue_script(
+					$data['handle'],
+					$data['src'],
+					$data['deps'],
+					$data['version'],
+					$data['in_footer']
+				);
+			}
+		}
 
 		// fields css
 		wp_enqueue_style(
 			'better-wp-admin-api-fields',
 			_WP_Admin_API::get_asset_file_url( 'css/admin/fields' . $script_postfix . '.css' )
 		);
+		
+		if ( count( $this->page_styles ) > 0 ) {
+			foreach( $this->page_styles as $data ) {
+				wp_enqueue_style(
+					$data['handle'],
+					$data['src'],
+					$data['deps'],
+					$data['version'],
+					$data['media']
+				);
+			}
+		}
 	}
 
 	protected function do_setup_page_hooks () {
@@ -370,6 +396,26 @@ class _WP_Admin_Page {
 
 	public function setup_page_hooks ( $callback ) {
 		$this->setup_callbacks[] = $callback;
+	}
+	
+	public function enqueue_script ( $handle, $src, $deps = [], $version = false, $in_footer = false ) {
+		$this->page_scripts[] = [
+			'handle' => $handle,
+			'src' => $src,
+			'deps' => $deps,
+			'version' => $version,
+			'in_footer' => $in_footer,
+		];
+	}
+	
+	public function enqueue_style ( $handle, $src, $deps = [], $version = false, $media = 'all' ) {
+		$this->page_styles[] = [
+			'handle' => $handle,
+			'src' => $src,
+			'deps' => $deps,
+			'version' => $version,
+			'media' => media,
+		];
 	}
 
 	public function add_field ( $data ) {
