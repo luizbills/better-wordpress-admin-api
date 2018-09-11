@@ -70,10 +70,10 @@ Generates:
 $your_page = wp_get_page_instance( 'your-page-id' );
 
 // get a field value
-$your_text_value = $my_page->get_field_value( 'your_text_field' );
+$your_text_value = $your_page->get_field_value( 'your_text_field' );
 
 // or with your prefix used above on $page_details (but it is not necessary)
-$your_text_value = $my_page->get_field_value( 'your_prefix_your_text_field' );
+$your_text_value = $your_page->get_field_value( 'your_prefix_your_text_field' );
 
 
 // or just put all together
@@ -107,6 +107,7 @@ More at [examples](/examples) folder.
 - [x] ~~Fields Documentation~~
 - [x] ~~Multiple checkboxes~~
 - [x] ~~Upload field~~
+- [ ] Custom layouts
 - [ ] Metaboxes
 
 ## Contributing
