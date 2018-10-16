@@ -17,6 +17,8 @@ include_once 'path/to/framework/init.php';
 
 ## Usage
 
+### Create admin pages
+
 ```php
 include_once __DIR__ . '/path/to/your/framework/init.php';
 
@@ -79,6 +81,54 @@ $your_text_value = $your_page->get_field_value( 'your_prefix_your_text_field' );
 // or just put all together
 $your_text_value = wp_get_page_field_value( 'your-page-id', 'your_text_field' );
 ```
+
+### Create metaboxes
+
+```php
+include_once __DIR__ . '/path/to/your/framework/init.php';
+
+// page details
+$metabox_args = [
+    'title'         => 'My Metabox',
+
+    // page slug
+    'id'                => 'your-metabox-id',
+
+    // automatically prefix all field ids
+    'prefix'    => 'your_prefix_',
+
+    // show in which post types
+    'post_type' => [ 'post', 'page', 'my-cpt' ],
+
+    // more options...
+    //'context' => 'advanced',
+	//'position' => 'default',
+    //'capability'        => 'manage_options',
+];
+
+// create the page
+$your_metabox = wp_create_admin_metabox( $metabox_args );
+
+// add fields
+
+// field details
+$field_args = [
+    'type'      => 'text',
+    'id'        => 'your_text_field',
+    'label'     => 'Your Text field',
+    'desc'      => 'Your field description. **You can use markdown here**.',
+    'props'     => [
+        // optional tag properties
+        'placeholder' => 'type something...'
+    ],
+    //'default' => 'hello world',
+];
+
+// creates a text field
+$your_metabox->add_field( $field_args );
+```
+
+### Examples
 
 More at [examples](/examples) folder.
 

@@ -164,7 +164,7 @@ class _WP_Field_Renderer {
 			<legend class="screen-reader-text">
 				<span><?php echo esc_html( $label ); ?></span>
 			</legend>
-			<label for="<?php echo esc_attr( $id ); ?>">
+			<label>
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 				<input
 					type="checkbox"
@@ -211,7 +211,7 @@ class _WP_Field_Renderer {
 			<label for="<?php echo esc_attr( $id ); ?>">
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 
-				<div class="checkboxes">
+				<div class="choices">
 
 					<?php foreach ( $choices as $choice_value => $choice_label ) : ?>
 
@@ -256,7 +256,7 @@ class _WP_Field_Renderer {
 			<legend class="screen-reader-text">
 				<span><?php echo esc_html( $label ); ?></span>
 			</legend>
-			<p>
+			<p class="choices">
 				<?php echo self::get_html_template( $settings['before'], false, [ $settings ] ); ?>
 
 				<?php foreach( $choices as $choice_key => $choice_label ) : ?>
@@ -419,7 +419,7 @@ class _WP_Field_Renderer {
 		$settings = array_merge( self::$field_defaults, $defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
 		ob_start();
-		echo self::get_html_template( $settings['content'], false, [ $settings, $settings['__PAGE__'] ] );
+		echo self::get_html_template( $settings['content'], false, [ $settings, $settings['__PARENT__'] ] );
 		if ( ! empty( $settings['desc'] ) ) :
 		?>
 		<p class="description"><?php self::render_description( $settings['desc'] ); ?></p>

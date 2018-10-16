@@ -454,7 +454,7 @@ class _WP_Admin_Page {
 		$data['wrapper_class'] .= $data['type'] === 'hidden' ? ' hidden_field' : '';
 
 		// special keys
-		$data['__PAGE__'] = $this;
+		$data['__PARENT__'] = $this;
 		$data['unprefixed_id'] = $data['id'];
 
 		// store the field
