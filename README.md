@@ -12,7 +12,7 @@ git clone https://github.com/luizbills/better-wordpress-admin-api/
 
 Include the `framework/init.php` file
 ```php
-include_once 'path/to/framework/init.php';
+include_once 'path/to/better-wordpress-admin-api/framework/init.php';
 ```
 
 ## Usage
