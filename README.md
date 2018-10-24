@@ -10,7 +10,7 @@ cd wp-content/plugins/my-plugin
 git clone https://github.com/luizbills/better-wordpress-admin-api/
 ```
 
-Include the `framework/init.php` file
+Include the `framework/init.php` file in your plugin or `functions.php`
 ```php
 include_once 'path/to/better-wordpress-admin-api/framework/init.php';
 ```
@@ -18,8 +18,6 @@ include_once 'path/to/better-wordpress-admin-api/framework/init.php';
 ## Usage
 
 ```php
-include_once __DIR__ . '/path/to/your/framework/init.php';
-
 // page details
 $page_args = [
     'menu_name'         => 'Your Page',
