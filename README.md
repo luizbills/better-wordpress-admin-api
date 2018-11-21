@@ -105,8 +105,7 @@ More at [examples](/examples) folder.
 - [x] ~~Fields Documentation~~
 - [x] ~~Multiple checkboxes~~
 - [x] ~~Upload field~~
-- [ ] Custom layouts
-- [ ] Metaboxes
+- [ ] [Redesign](https://github.com/luizbills/better-wordpress-admin-api/issues/10)
 
 ## Contributing
 
