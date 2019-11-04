@@ -19,8 +19,3 @@ function wp_get_page_field_value ( $page_id, $field_id ) {
 
 	return false;
 }
-
-function wp_get_metabox_field_value ( $metabox_id, $field_id ) {
-	// TODO
-	return false;
-}
