@@ -419,10 +419,12 @@ class _WP_Field_Renderer {
 		$settings = array_merge( self::$field_defaults, $defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
 		$find = [
-			'{id}'
+			'{id}',
+			'{value}',
 		];
 		$replace = [
-			$settings['id']
+			$settings['id'],
+			$settings['value'],
 		];
 		$content = str_replace( $find, $replace, $settings['content'] );
 		ob_start();
