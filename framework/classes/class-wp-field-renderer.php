@@ -418,8 +418,15 @@ class _WP_Field_Renderer {
 		];
 		$settings = array_merge( self::$field_defaults, $defaults, $settings );
 		$settings = apply_filters( 'better_wp_admin_api_field_html_settings', $settings );
+		$find = [
+			'{id}'
+		];
+		$replace = [
+			$settings['id']
+		];
+		$content = str_replace( $find, $replace, $settings['content'] );
 		ob_start();
-		echo self::get_html_template( $settings['content'], false, [ $settings, $settings['__PAGE__'] ] );
+		echo self::get_html_template( $content, false, [ $settings, $settings['__PAGE__'] ] );
 		if ( ! empty( $settings['desc'] ) ) :
 		?>
 		<p class="description"><?php self::render_description( $settings['desc'] ); ?></p>
