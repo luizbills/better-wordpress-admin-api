@@ -250,7 +250,9 @@ $the_page->add_field([
 
     //'wrapper_class' => '',
 
-    'content' => 'custom_render_html_field',
+    'content' => 'custom_render_html_field', // to use a function renderer
+    // or render with template variables
+    // 'content' => '<input name="{id}" value="{value}" type="text">'
 
     //'sanitize_callback' => 'custom_callback_to_sanitize_this_field',
 ]);
