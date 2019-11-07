@@ -423,8 +423,8 @@ class _WP_Field_Renderer {
 			'{value}',
 		];
 		$replace = [
-			$settings['id'],
-			$settings['value'],
+			esc_attr( $settings['id'] ),
+			esc_attr( $settings['value'] ),
 		];
 		$content = str_replace( $find, $replace, $settings['content'] );
 		ob_start();
