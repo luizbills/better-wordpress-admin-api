@@ -9,7 +9,7 @@ if ( ! defined( 'BETTER_WP_ADMIN_API_VERSION' ) ) {
 	define( 'BETTER_WP_ADMIN_API_FILE', __FILE__ );
 
 	if ( ! class_exists( 'Parsedown' ) ) {
-		require_once( __DIR__ . '/vendor/Parsedown/Parsedown.php' );
+		require_once( __DIR__ . '/libs/Parsedown/Parsedown.php' );
 	}
 
 	require_once( __DIR__ . '/classes/class-wp-admin-api.php' );
