@@ -314,7 +314,7 @@ class _WP_Admin_Page {
 	}
 
 	public function enqueue_assets () {
-		$script_postfix = defined( 'WP_DEBUG_SCRIPT' ) && WP_DEBUG_SCRIPT ? '' : '.min';
+		$script_postfix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$has_code_field = defined( 'WP_ADMIN_PAGE_HAS_CODE_FIELD' );
 		$has_color_field = defined( 'WP_ADMIN_PAGE_HAS_COLOR_FIELD' );
 		$has_image_field = defined( 'WP_ADMIN_PAGE_HAS_IMAGE_FIELD' );
